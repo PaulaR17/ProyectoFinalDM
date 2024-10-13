@@ -39,3 +39,14 @@ TFGinder es una aplicación diseñada para conectar alumnos con profesores tutor
 ## Imágen del prototipo inicial
 
 ![Vista General del Prototipo](general_images/Prototype_General.jpg)
+
+## Prototipo interactivo
+
+El prototipo de la aplicación, donde se puede explorar la navegación y diseño de la interfaz, se encuentra en la rama `figma-prototype`. 
+
+### ¿Cómo acceder al prototipo?
+
+1. En GitHub, selecciona la rama `figma-prototype` desde el selector de ramas (branch) en la parte superior izquierda.
+2. Una vez en la rama, podrás ver el README que contiene capturas de pantalla y el enlace al prototipo interactivo en Figma.
+
+[Enlace directo al prototipo en Figma](https://www.figma.com/proto/mD6poSQISxMKhh0NFjWK5a/AppDesign?node-id=1-33&node-type=canvas&t=fCv52QfU8z2E5Cl1-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A33)
