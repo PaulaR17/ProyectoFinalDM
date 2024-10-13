@@ -1,4 +1,3 @@
-"# Proyecto Final DDM" 
 # TFGinder
 
 ## Descripción
@@ -14,7 +13,7 @@ TFGinder es una aplicación diseñada para conectar alumnos con profesores tutor
 - **Favoritos**: Los alumnos pueden agregar profesores a una lista de favoritos para revisar más tarde.
 - **Chat**: Una vez que se hace match, los alumnos y profesores pueden conversar a través del chat integrado.
 
-## Tecnologías Utilizadas
+## Tecnologías utilizadas
 
 - **Angular y TypeScript**: Para la estructura del frontend y la interacción con el usuario.
 - **Ionic Framework**: Para la creación de la interfaz.
@@ -22,7 +21,7 @@ TFGinder es una aplicación diseñada para conectar alumnos con profesores tutor
 - **Firebase o base de datos**: Para almacenar información sobre los profesores, alumnos, y las conversaciones de chat.
 - **Git y GitHub**: Control de versiones.
 
-## Por Implementar
+## Por implementar
 
 - **Registro de usuarios**: Crear el sistema de registro de alumnos y profesores con validación de datos (nombre, correo, contraseña).
 - **Login y autenticación**: Implementar un sistema de login y autenticación para gestionar el acceso de los usuarios.
@@ -37,6 +36,6 @@ TFGinder es una aplicación diseñada para conectar alumnos con profesores tutor
 - **Interfaz de administración para profesores**: Crear una vista donde los profesores puedan ver los alumnos interesados y gestionar las solicitudes de TFG.
 - **Sistema de calificación**: Implementar un sistema que permita a los alumnos evaluar la experiencia con el profesor al finalizar el TFG.
 
-## Imágenes del Proyecto
+## Imágen del prototipo inicial
 
 ![Vista General del Prototipo](general_images/Prototype_General.jpg)
