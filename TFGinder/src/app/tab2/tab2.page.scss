@@ -1,0 +1,83 @@
+ion-content {
+  --ion-background-color: var(--light);
+}
+  
+  .chat-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chat-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  
+  .chat-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .chat-item:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .chat-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .chat-info {
+    flex-grow: 1;
+  }
+  
+  .chat-name {
+    font-weight: bold;
+    color: var(--light);
+    margin: 0;
+  }
+  
+  .chat-preview {
+    color: white;
+    font-size: 0.9em;
+    margin: 5px 0 0 0;
+  }
+  
+  .chat-time {
+    color: #999;
+    font-size: 0.8em;
+  }
+  
+  .unread-badge {
+    background: #ff6b6b;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    margin-left: 10px;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: white;
+  }
+  
+  .empty-state svg {
+    margin-bottom: 20px;
+  }

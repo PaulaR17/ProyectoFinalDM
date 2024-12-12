@@ -1,0 +1,122 @@
+ion-content {
+    --ion-background-color: var(--light);
+  }
+  
+  .profile-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 20px;
+  }
+  
+  .profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #ff6b6b;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .profile-avatar:hover::after {
+    content: "Cambiar foto";
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--dark);
+    font-weight: 500;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  
+  .tfg-list {
+    margin-top: 30px;
+  }
+  
+  .tfg-item {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background: #f8f9fa;
+  }
+  
+  .tfg-title {
+    font-weight: bold;
+    color: var(--dark);
+    margin-bottom: 5px;
+  }
+  
+  .tfg-professor {
+    color: #666;
+    font-size: 0.9em;
+  }
+  
+  .tfg-status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-top: 5px;
+  }
+  
+  .status-pending {
+    background: #ffd700;
+    color: #000;
+  }
+  
+  .status-accepted {
+    background: #4ecdc4;
+    color: white;
+  }
+  
+  .save-button {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    width: 100%;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s ease;
+  }
+  
+  .save-button:hover {
+    background: #ff5252;
+  }

@@ -1,13 +1,35 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Match</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Match</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="match-container">
+    <h1 class="match-header">¡Es un Match! 🎉</h1>
+
+    <div class="match-content">
+      <div class="profiles">
+        <div class="profile">
+          <ion-avatar class="profile-circle">
+            <ion-img [src]="user1.imagen"></ion-img>
+          </ion-avatar>
+        </div>
+
+        <div class="hearts">
+          <ion-icon name="heart" color="danger" class="heart"></ion-icon>
+        </div>
+
+        <div class="profile">
+          <ion-avatar class="profile-circle">
+            <ion-img [src]="user2.imagen"></ion-img>
+          </ion-avatar>
+        </div>
+      </div>
+
+      <div class="match-message">
+        <p>¡Has hecho match con {{ user2.name }}!</p>
+        <p>Especialidad: {{ user2.especialidad }}</p>
+      </div>
+
+      <div class="match-buttons">
+        <ion-button class="chat-now" (click)="goToChat()">Iniciar Chat</ion-button>
+        <ion-button class="keep-searching" (click)="keepSearching()">Seguir Buscando</ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content>

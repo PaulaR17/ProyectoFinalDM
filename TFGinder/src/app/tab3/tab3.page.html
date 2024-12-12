@@ -1,17 +1,54 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="presentAlert()">
+        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>TFGinder</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="profile-container">
+    <div class="profile-header">
+      <ion-avatar class="profile-avatar" (click)="changeProfilePicture()">
+        <ion-img [src]="user.imagen"></ion-img>
+      </ion-avatar>
+    </div>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+    <form id="profileForm" (ngSubmit)="saveProfile()">
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Nombre completo</ion-label>
+          <ion-input type="text" [(ngModel)]="user.name" name="name" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Carrera</ion-label>
+          <ion-input type="text" [(ngModel)]="user.career" name="career" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Correo electrónico</ion-label>
+          <ion-input type="email" [(ngModel)]="user.email" name="email" required></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <div class="tfg-list">
+        <h3 class="section-title">Mis TFGs</h3>
+        <ion-list>
+          <ion-item *ngFor="let tfg of tfgs">
+            <ion-label>
+              <h2 class="tfg-title">{{ tfg.title }}</h2>
+              <p class="tfg-professor">{{ tfg.professor }}</p>
+            </ion-label>
+            <ion-badge slot="end" [color]="tfg.status === 'Aceptado' ? 'success' : 'warning'">{{ tfg.status }}</ion-badge>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <ion-button class="save-button" type="submit" expand="block">Guardar cambios</ion-button>
+    </form>
+  </div>
 </ion-content>

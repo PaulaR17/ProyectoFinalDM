@@ -1,0 +1,88 @@
+ion-content {
+    --ion-background-color: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-container {
+    max-width: 400px;
+    width: 90%;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .illustration {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+  }
+  
+  .logo {
+    font-size: 2.5em;
+    color: #ff6b6b;
+    font-weight: bold;
+    margin: 20px 0 40px;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: #ff6b6b;
+  }
+  
+  .login-btn {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+  }
+  
+  .forgot-password {
+    margin-top: 20px;
+    color: #666;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .forgot-password:hover {
+    color: #ff6b6b;
+  }
+  
+  .signup-link {
+    margin-top: 30px;
+    color: #666;
+  }
+  
+  .signup-link a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: bold;
+  }

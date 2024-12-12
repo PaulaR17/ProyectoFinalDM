@@ -1,17 +1,30 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="presentAlert()">
+        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>TFGinder</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <div class="chat-container">
+    <ion-list class="chat-list">
+      <ion-item *ngFor="let chat of chats" (click)="openChat(chat)">
+        <ion-avatar slot="start">
+          <ion-img [src]="chat.imagen"></ion-img>
+        </ion-avatar>
+        <ion-label class="chat-info">
+          <h3 class="chat-name">{{ chat.name }}</h3>
+          <p class="chat-preview">{{ chat.preview }}</p>
+        </ion-label>
+        <div slot="end">
+          <p class="chat-time">{{ chat.time }}</p>
+          <ion-badge *ngIf="chat.unread" color="danger">{{ chat.unread }}</ion-badge>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
