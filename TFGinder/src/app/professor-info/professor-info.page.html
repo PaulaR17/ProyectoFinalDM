@@ -1,13 +1,35 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>ProfessorInfo</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Perfil Profesor</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">ProfessorInfo</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+<content>
+  <div class="profile-container">
+    <div class="professor-header">
+      <ion-avatar class="professor-avatar">
+        <ion-img [src]="professor.imagen"></ion-img>
+      </ion-avatar>
+    </div>
+
+    <div class="professor-info">
+      <h1 class="professor-name">{{ professor.name}}</h1>
+      <p class="professor-department">{{ professor.department }}</p>
+
+      <div class="tfg-section">
+        <h2 class="tfg-title">{{ professor.tfg.title }}</h2>
+        <p class="tfg-description">{{ professor.tfg.description }}</p>
+      </div>
+
+      <div class="action-buttons">
+        <ion-button class="reject-btn" (click)="reject()">✕</ion-button>
+        <ion-button class="like-btn" (click)="like()">♥</ion-button>
+      </div>
+    </div>
+  </div>
+</content>

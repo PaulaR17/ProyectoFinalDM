@@ -1,0 +1,94 @@
+ion-content {
+    --ion-background-color: var(--light);
+  }
+  
+  .profile-container {
+    max-width: 400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .professor-header {
+    position: relative;
+    height: 300px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .professor-avatar {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .professor-info {
+    padding: 20px;
+  }
+  
+  .professor-name {
+    font-size: 1.8em;
+    margin: 0;
+    color: #666;
+  }
+  
+  .professor-department {
+    color: #666;
+    margin: 5px 0 15px 0;
+  }
+  
+  .tfg-section {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+  }
+  
+  .tfg-title {
+    font-size: 1.2em;
+    color: black;
+    margin: 0 0 10px 0;
+  }
+  
+  .tfg-description {
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    border-top: 1px solid #eee;
+  }
+  
+  .action-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    transition: transform 0.2s;
+  }
+  
+  .action-button:hover {
+    transform: scale(1.1);
+  }
+  
+  .like-btn {
+    background: #4ecdc4;
+    color: white;
+  }
+  
+  .reject-btn {
+    background: #ff6b6b;
+    color: white;
+  }

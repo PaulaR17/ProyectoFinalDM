@@ -19,6 +19,6 @@ export class LoginPage {
     // Aquí realizarías la llamada a la API para autenticar al usuario
 
     // Si la autenticación es exitosa, redirige al usuario a la página principal
-    this.router.navigateByUrl('/tabs/tab1'); 
+    this.router.navigateByUrl("/tabs")
   }
 }
