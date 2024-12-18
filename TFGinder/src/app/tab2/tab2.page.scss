@@ -1,9 +1,9 @@
 ion-content {
-  --ion-background-color: var(--light);
+  --ion-background-color: #f5f6fa;
 }
   
   .chat-container {
-    background: white;
+    background: #f5f6fa;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
@@ -48,7 +48,7 @@ ion-content {
   
   .chat-name {
     font-weight: bold;
-    color: var(--light);
+    color: #f5f6fa;
     margin: 0;
   }
   

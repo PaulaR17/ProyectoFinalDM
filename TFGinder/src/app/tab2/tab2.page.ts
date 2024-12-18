@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -12,7 +13,7 @@ export class Tab2Page {
       name: 'Dra. María López',
       preview: '¡Hola! Me interesa tutorizar tu TFG sobre metodologías ágiles.',
       time: '12:30',
-      unread: 2,
+      unread: 0,
       imagen: 'ruta/a/la/imagen1.jpg'
     },
     {
@@ -33,7 +34,7 @@ export class Tab2Page {
 
   currentSegment = 'chats';
 
-  constructor(private alertController: AlertController) {}
+  constructor(private alertController: AlertController,private router: Router) {}
 
   segmentChanged(event: any) {
     console.log(event.detail.value);
@@ -52,7 +53,6 @@ export class Tab2Page {
   }
 
   openChat(chat: any) {
-    console.log('Abriendo chat con', chat.name);
-    // Aquí puedes agregar la lógica para abrir el chat
+    this.router.navigateByUrl('/chat'); 
   }
 }

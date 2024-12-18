@@ -1,13 +1,29 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Chat</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <div class="chat-title">
+        <h3 class="professor-name">{{ professor.name }}</h3>
+        <div class="status">{{ professor.status }}</div>
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Chat</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="chat-body">
+    <div *ngFor="let message of messages" class="message" [class.received]="message.tipo === 'received'">
+      <div class="message-bubble">{{ message.text }}</div>
+      <span class="message-time">{{ message.time }}</span>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <ion-textarea class="message-box" placeholder="Escribe un mensaje..." [(ngModel)]="newMessage"></ion-textarea>
+    <ion-button class="send-btn" (click)="sendMessage()">➤</ion-button>
+  </div>
 </ion-content>
