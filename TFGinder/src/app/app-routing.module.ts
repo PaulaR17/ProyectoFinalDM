@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./tfg-student/tfg-student.module').then( m => m.TFGStudentPageModule)
   },
   {
     path: 'login',
@@ -29,7 +29,27 @@ const routes: Routes = [
   {
     path: 'chat',
     loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
+  },
+  {
+    path: 'student-info',
+    loadChildren: () => import('./student-info/student-info.module').then( m => m.StudentInfoPageModule)
+  },
+  {
+    path: 'professor-profile',
+    loadChildren: () => import('./professor-profile/professor-profile.module').then( m => m.ProfessorProfilePageModule)
+  },
+  {
+    path: 'tfg-professor',
+    loadChildren: () => import('./tfg-professor/tfg-professor.module').then( m => m.TFGProfessorPageModule)
+  },
+  {
+    path: 'tfg-student',
+    loadChildren: () => import('./tfg-student/tfg-student.module').then( m => m.TFGStudentPageModule)
   }
+
+
+
+
 ];
 @NgModule({
   imports: [

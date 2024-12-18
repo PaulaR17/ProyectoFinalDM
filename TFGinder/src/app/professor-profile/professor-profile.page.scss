@@ -1,0 +1,121 @@
+ion-content {
+    --ion-background-color: #f5f6fa;
+  }
+  
+  .profile-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 20px;
+  }
+  
+  .profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #ff6b6b;
+  }
+  
+  .profile-name {
+    font-size: 1.5em;
+    color: #2d3436;
+    margin: 10px 0 5px;
+  }
+  
+  .profile-title {
+    color: #666;
+    margin: 0;
+  }
+  
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  .stat-item {
+    text-align: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .stat-number {
+    font-size: 1.5em;
+    color: #ff6b6b;
+    font-weight: bold;
+  }
+  
+  .stat-label {
+    font-size: 0.8em;
+    color: #666;
+  }
+  
+  .tfg-list {
+    margin-top: 20px;
+  }
+  
+  .tfg-item {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    position: relative;
+  }
+  
+  .tfg-title {
+    font-weight: bold;
+    color:  #2d3436;
+    margin-bottom: 5px;
+  }
+  
+  .tfg-student {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .tfg-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+  }
+  
+  .section-title {
+    font-size: 1.1em;
+    color:  #2d3436;
+    margin: 20px 0 15px;
+    border-bottom: 2px solid  #ff6b6b;
+    padding-bottom: 5px;
+  }
+  
+  .edit-button {
+    background:  #ff6b6b;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    width: 100%;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s ease;
+  }
+  
+  .edit-button:hover {
+    background: #ff5252;
+  }

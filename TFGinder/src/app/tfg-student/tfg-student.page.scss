@@ -1,0 +1,102 @@
+ion-content {
+    --ion-background-color: #f5f6fa;
+  }
+  
+  .header {
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .tfg-title {
+    font-size: 1.5em;
+    color: #2d3436;
+    margin: 10px 0;
+  }
+  
+  .details-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .info-section {
+    margin-bottom: 20px;
+  }
+  
+  .info-label {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+  }
+  
+  .info-content {
+    color: #2d3436;
+    font-size: 1.1em;
+  }
+  
+  .description {
+    color: #2d3436;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+  }
+  
+  .status-selector {
+    color: #2d3436;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+  }
+  
+  .notes-input {
+    color: #2d3436;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .grade-input {
+    color: #2d3436;
+    width: 100px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+  }
+  
+  .save-button {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    width: 100%;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s ease;
+  }
+  
+  .save-button:hover {
+    background: #ff5252;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    color: white;
+    margin: 10px 0;
+  }

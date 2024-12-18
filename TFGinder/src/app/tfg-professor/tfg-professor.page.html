@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ tfg.title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="details-container">
+    <div class="info-section">
+      <div class="info-label">Estado Actual</div>
+      <ion-badge class="status-badge" [color]="tfg.status === 'En Curso' ? 'primary' : tfg.status === 'Evaluado' ? 'warning' : 'success'">{{ tfg.status }}</ion-badge>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Estudiante</div>
+      <div class="info-content">{{ tfg.student }}</div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Tutor</div>
+      <div class="info-content">{{ tfg.tutor }}</div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Descripción</div>
+      <div class="description">{{ tfg.description }}</div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Modificar Estado</div>
+      <ion-select class="status-selector" [(ngModel)]="tfg.status" interface="popover">
+        <ion-select-option value="En Curso">En Curso</ion-select-option>
+        <ion-select-option value="Evaluado">Evaluado</ion-select-option>
+        <ion-select-option value="Terminado">Terminado</ion-select-option>
+      </ion-select>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Calificación</div>
+      <ion-input type="number" class="grade-input" min="0" max="10" step="0.1" placeholder="0.0" [(ngModel)]="tfg.calificacion"></ion-input>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Notas y Comentarios</div>
+      <ion-textarea class="notes-input" placeholder="Añade notas sobre el progreso o aspectos a mejorar..." [(ngModel)]="tfg.notas"></ion-textarea>
+    </div>
+
+    <ion-button class="save-button" expand="block" (click)="saveChanges()">Guardar Cambios</ion-button>
+  </div>
+</ion-content>

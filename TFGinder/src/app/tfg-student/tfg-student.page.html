@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ tfg.title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="details-container">
+    <div class="info-section">
+      <div class="info-label">Estado Actual</div>
+      <ion-badge class="status-badge" [color]="tfg.status === 'En Curso' ? 'primary' : tfg.status === 'Evaluado' ? 'warning' : 'success'">{{ tfg.status }}</ion-badge>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Estudiante</div>
+      <div class="info-content">{{ tfg.student }}</div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Tutor</div>
+      <div class="info-content">{{ tfg.tutor }}</div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Descripción</div>
+      <div class="description">{{ tfg.description }}</div>
+    </div>
+  </div>
+</ion-content>

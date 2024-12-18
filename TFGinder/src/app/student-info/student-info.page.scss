@@ -1,0 +1,83 @@
+ion-content {
+    --ion-background-color:#f5f6fa;
+  }
+  
+  .app-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .profile-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .profile-image {
+    width: 100%;
+    height: 300px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile-info {
+    padding: 20px;
+  }
+  
+  .student-name {
+    font-size: 1.8em;
+    margin: 0;
+    color: #2d3436;
+  }
+  
+  .tfg-title {
+    font-size: 1.2em;
+    color: #2d3436;
+    margin: 10px 0;
+    font-weight: bold;
+  }
+  
+  .tfg-description {
+    color: #666;
+    line-height: 1.6;
+    margin: 15px 0;
+  }
+  
+  .action-panel {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    border-top: 1px solid #eee;
+  }
+  
+  .action-btn {
+    width: 120px;
+    height: 45px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .action-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  .like-btn {
+    background: #4ecdc4;
+    color: white;
+  }
+  
+  .reject-btn {
+    background: #ff6b6b;
+    color: white;
+  }

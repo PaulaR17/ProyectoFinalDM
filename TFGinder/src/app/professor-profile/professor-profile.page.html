@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="presentAlert()">
+        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>TFGinder</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="profile-container">
+    <div class="profile-header">
+      <ion-avatar class="profile-avatar">
+        <ion-img [src]="professor.imagen"></ion-img>
+      </ion-avatar>
+      <h2 class="profile-name">{{ professor.name }}</h2>
+      <p class="profile-title">{{ professor.title }}</p>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-item">
+        <div class="stat-number">{{ professor.tfgsDirigidos }}</div>
+        <div class="stat-label">TFGs Dirigidos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ professor.enCurso }}</div>
+        <div class="stat-label">En Curso</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ professor.matches }}</div>
+        <div class="stat-label">Matches</div>
+      </div>
+    </div>
+
+    <h3 class="section-title">TFGs Actuales</h3>
+    <div class="tfg-list">
+      <ion-item *ngFor="let tfg of professor.tfgs">
+        <ion-label>
+          <h2 class="tfg-title">{{ tfg.title }}</h2>
+          <p class="tfg-student">Alumno: {{ tfg.student }}</p>
+        </ion-label>
+        <ion-badge slot="end" [color]="tfg.status === 'En Curso' ? 'primary' : tfg.status === 'Evaluado' ? 'warning' : 'success'">{{ tfg.status }}</ion-badge>
+      </ion-item>
+    </div>
+
+    <ion-button class="edit-button" expand="block" (click)="editProfile()">Editar Perfil</ion-button>
+  </div>
+</ion-content>
