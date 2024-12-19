@@ -3,7 +3,7 @@ ion-content {
 }
   
   .chat-container {
-    background: #f5f6fa;
+    background-color: #f5f6fa;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
@@ -13,6 +13,7 @@ ion-content {
   }
   
   .chat-list {
+    background-color: #f5f6fa;
     flex-grow: 1;
     overflow-y: auto;
     padding: 10px;
@@ -32,6 +33,7 @@ ion-content {
   }
   
   .chat-avatar {
+    
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -73,11 +75,13 @@ ion-content {
   }
   
   .empty-state {
+    background-color: #f5f6fa;
     text-align: center;
     padding: 40px;
     color: white;
   }
   
   .empty-state svg {
+    background-color: #f5f6fa;
     margin-bottom: 20px;
   }

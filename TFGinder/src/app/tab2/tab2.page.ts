@@ -14,21 +14,21 @@ export class Tab2Page {
       preview: '¡Hola! Me interesa tutorizar tu TFG sobre metodologías ágiles.',
       time: '12:30',
       unread: 0,
-      imagen: 'ruta/a/la/imagen1.jpg'
+      imagen: 'assets/images/Maria.png'
     },
     {
       name: 'Dr. Juan Martínez',
       preview: '¿Te gustaría explorar un proyecto en Cloud Computing?',
       time: 'Ayer',
       unread: 0,
-      imagen: 'ruta/a/la/imagen2.jpg'
+      imagen: 'assets/images/Juan.png'
     },
     {
       name: 'Dra. Ana García',
       preview: 'Podemos reunirnos para discutir tu propuesta de Machine Learning',
       time: 'Lun',
       unread: 0,
-      imagen: 'ruta/a/la/imagen3.jpg'
+      imagen: 'assets/images/Ana.png'
     },
   ];
 

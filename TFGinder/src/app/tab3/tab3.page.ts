@@ -11,7 +11,7 @@ export class Tab3Page {
     name: 'Carlos Rodríguez',
     career: 'Ingeniería Informática',
     email: 'carlos.rodriguez@universidad.es',
-    imagen: 'ruta/a/la/imagen.jpg'
+    imagen: 'assets/images/Usuario.png'
   };
 
   tfgs = [

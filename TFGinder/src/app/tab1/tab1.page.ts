@@ -12,19 +12,19 @@ export class Tab1Page implements OnInit {
       name: 'Dr. Ana García',
       department: 'Departamento de Informática',
       interests: 'Inteligencia Artificial, Machine Learning, Deep Learning',
-      imagen: 'ruta/a/la/imagen1.jpg' // Asegúrate de proporcionar la ruta correcta a la imagen
+      imagen: 'assets/images/Ana.png'
     },
     {
       name: 'Dr. Juan Martínez',
       department: 'Departamento de Sistemas',
       interests: 'Desarrollo Web, Cloud Computing, DevOps',
-      imagen: 'ruta/a/la/imagen2.jpg' 
+      imagen: 'assets/images/Juan.png' 
     },
     {
       name: 'Dra. María López',
       department: 'Departamento de Software',
       interests: 'Ingeniería de Software, Metodologías Ágiles',
-      imagen: 'ruta/a/la/imagen3.jpg' 
+      imagen: 'assets/images/Maria.png' 
     },
   ];
 
