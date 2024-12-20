@@ -13,7 +13,8 @@
   <div class="card-container">
     <div class="professor-card" id="currentCard">
       <div class="professor-image">
-          <ion-img [src]="currentProfessor.imagen"></ion-img> 
+        <button (click)="mostrarDetallesProfesor()"><ion-img [src]="currentProfessor.imagen"></ion-img> 
+        </button>
       </div>
       <div class="professor-info">
         <h2 class="professor-name">{{ currentProfessor.name }}</h2>

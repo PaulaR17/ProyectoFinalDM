@@ -38,7 +38,7 @@
       <div class="tfg-list">
         <h3 class="section-title">Mis TFGs</h3>
         <ion-list>
-          <ion-item *ngFor="let tfg of tfgs">
+          <ion-item *ngFor="let tfg of tfgs" (click)="mostrarDetallesTFG()"> 
             <ion-label>
               <h2 class="tfg-title">{{ tfg.title }}</h2>
               <p class="tfg-professor">{{ tfg.professor }}</p>

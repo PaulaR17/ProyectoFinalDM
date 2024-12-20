@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-tab3',
@@ -21,7 +22,7 @@ export class Tab3Page {
 
   currentSegment = 'user';
 
-  constructor(private alertController: AlertController) {}
+  constructor(private alertController: AlertController,private router: Router) {}
 
   segmentChanged(event: any) {
     console.log(event.detail.value);
@@ -47,5 +48,9 @@ export class Tab3Page {
   saveProfile() {
     console.log('Guardar cambios del perfil');
     // Aquí puedes agregar la lógica para guardar los cambios del perfil
+  }
+  mostrarDetallesTFG() {
+    // Navegar a la página de detalles del TFG y pasar los datos del TFG
+    this.router.navigateByUrl('/tfg-student'); 
   }
 }

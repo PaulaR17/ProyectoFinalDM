@@ -22,6 +22,6 @@ export class TFGStudentPage implements OnInit {
   ngOnInit() {}
 
   goBack() {
-    this.router.navigateByUrl('/student-profile'); // O la ruta a la que quieras redirigir
+    this.router.navigateByUrl('/tabs/tab3'); // O la ruta a la que quieras redirigir
   }
 }

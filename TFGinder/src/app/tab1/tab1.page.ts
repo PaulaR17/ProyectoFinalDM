@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab1',
@@ -32,7 +33,7 @@ export class Tab1Page implements OnInit {
   currentProfessor = this.professors[this.currentProfessorIndex];
   currentSegment = 'home';
 
-  constructor(private alertController: AlertController) {}
+  constructor(private alertController: AlertController, private router: Router) {}
 
   ngOnInit() {}
 
@@ -68,5 +69,9 @@ export class Tab1Page implements OnInit {
   nope() {
     // Aquí puedes agregar la lógica para cuando se da nope a un profesor
     this.showNextProfessor();
+  }
+
+  mostrarDetallesProfesor() {
+    this.router.navigate(['/professor-info']); 
   }
 }

@@ -10,7 +10,7 @@ export class ProfessorInfoPage implements OnInit {
   professor = {
     name: 'Dr. Ana García',
     department: 'Departamento de Informática',
-    imagen: 'ruta/a/la/imagen.jpg',
+    imagen: 'assets/images/Ana.png',
     tfg: {
       title: 'Desarrollo de un Sistema de Recomendación basado en IA',
       description: 'Proyecto centrado en la implementación de un sistema de recomendación utilizando técnicas avanzadas de Machine Learning y Deep Learning. El objetivo es desarrollar un modelo capaz de realizar recomendaciones personalizadas basadas en el comportamiento del usuario y sus preferencias.'
