@@ -12,7 +12,7 @@ export class LoginPage {
     password: ''
   };
 
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
 
   login() {
     console.log('Login attempt:', this.credentials);
