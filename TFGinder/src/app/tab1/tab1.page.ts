@@ -62,13 +62,27 @@ export class Tab1Page implements OnInit {
   }
 
   like() {
-    // Aquí puedes agregar la lógica para cuando se da like a un profesor
-    this.showNextProfessor();
+    // Agregar la clase de animación para like
+    const card = document.getElementById('currentCard');
+    card?.classList.add('like-animation');
+
+    // Esperar a que termine la animación antes de mostrar el siguiente profesor
+    setTimeout(() => {
+      card?.classList.remove('like-animation');
+      this.showNextProfessor();
+    }, 500); // 500ms es la duración de la animación
   }
 
   nope() {
-    // Aquí puedes agregar la lógica para cuando se da nope a un profesor
-    this.showNextProfessor();
+    // Agregar la clase de animación para nope
+    const card = document.getElementById('currentCard');
+    card?.classList.add('nope-animation');
+
+    // Esperar a que termine la animación antes de mostrar el siguiente profesor
+    setTimeout(() => {
+      card?.classList.remove('nope-animation');
+      this.showNextProfessor();
+    }, 500); // 500ms es la duración de la animación
   }
 
   mostrarDetallesProfesor() {
