@@ -16,11 +16,17 @@ ion-content {
   }
   
   .illustration {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 20px;
+    display: flex; /* Usamos flexbox para centrar */
+  justify-content: center; /* Centramos horizontalmente */
+  align-items: center; /* Centramos verticalmente */
+  width: 100%; /* Ajustamos el ancho al 100% del contenedor */
+  height: 200px; /* Ajustamos la altura según sea necesario */
+  margin: 0 auto 20px; 
   }
-  
+  .illustration ion-img {
+    max-width: 100%; /* Aseguramos que la imagen no se desborde */
+    max-height: 100%; /* Aseguramos que la imagen no se desborde */
+  }
   .logo {
     font-size: 2.5em;
     color: #ff6b6b;
