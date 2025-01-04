@@ -10,19 +10,27 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="card-container">
+  <div class="card-container" *ngIf="currentProfessor; else loading">
     <div class="professor-card" id="currentCard">
       <div class="professor-image">
-        <button (click)="mostrarDetallesProfesor()"><ion-img [src]="currentProfessor.imagen"></ion-img> 
+        <button (click)="mostrarDetallesProfesor()">
+          <ion-img [src]="currentProfessor['imagen'] || 'assets/images/default.png'"></ion-img>
         </button>
       </div>
       <div class="professor-info">
-        <h2 class="professor-name">{{ currentProfessor.name }}</h2>
-        <p class="professor-department">{{ currentProfessor.department }}</p>
-        <p class="professor-interests">Intereses: {{ currentProfessor.interests }}</p>
+        <h2 class="professor-name">{{ currentProfessor['Título del TFG'] }}</h2>
+        <p class="professor-department">Tutor: {{ currentProfessor['Tutor/a'] }}</p>
+        <p class="professor-interests">Estado: {{ currentProfessor['Estado'] }}</p>
       </div>
     </div>
   </div>
+
+  <ng-template #loading>
+    <div class="loading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando datos...</p>
+    </div>
+  </ng-template>
 
   <div class="buttons">
     <ion-button class="nope-btn" (click)="nope()">✕</ion-button>

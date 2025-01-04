@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
+
 
 @Component({
   selector: 'app-tab1',
@@ -8,34 +11,34 @@ import { Router } from '@angular/router';
   styleUrls: ['./tab1.page.scss'],
 })
 export class Tab1Page implements OnInit {
-  professors = [
-    {
-      name: 'Dr. Ana García',
-      department: 'Departamento de Informática',
-      interests: 'Inteligencia Artificial, Machine Learning, Deep Learning',
-      imagen: 'assets/images/Ana.png'
-    },
-    {
-      name: 'Dr. Juan Martínez',
-      department: 'Departamento de Sistemas',
-      interests: 'Desarrollo Web, Cloud Computing, DevOps',
-      imagen: 'assets/images/Juan.png' 
-    },
-    {
-      name: 'Dra. María López',
-      department: 'Departamento de Software',
-      interests: 'Ingeniería de Software, Metodologías Ágiles',
-      imagen: 'assets/images/Maria.png' 
-    },
-  ];
-
+  professors: any[] = []; // Almacena los datos obtenidos de Firebase
   currentProfessorIndex = 0;
-  currentProfessor = this.professors[this.currentProfessorIndex];
+  currentProfessor: any = null;
   currentSegment = 'home';
 
-  constructor(private alertController: AlertController, private router: Router) {}
+  constructor(
+    private alertController: AlertController,
+    private router: Router,
+    private firestore: AngularFirestore // Inyección del servicio AngularFirestore
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadProfessorsFromFirebase();
+  }
+
+  // Método para cargar los datos desde Firebase
+  loadProfessorsFromFirebase() {
+    this.firestore
+      .collection('tfginder')
+      .valueChanges()
+      .subscribe((data: any[]) => {
+        console.log('Datos obtenidos:', data); // Verifica los datos
+        this.professors = data;
+        if (this.professors.length > 0) {
+          this.currentProfessor = this.professors[this.currentProfessorIndex];
+        }
+      });
+  }
 
   segmentChanged(event: any) {
     console.log(event.detail.value);
@@ -44,9 +47,9 @@ export class Tab1Page implements OnInit {
 
   async presentAlert() {
     const alert = await this.alertController.create({
-      header: 'Alert',
-      subHeader: 'Subtitle',
-      message: 'This is an alert message.',
+      header: 'Alerta',
+      subHeader: 'Mensaje Importante',
+      message: 'Esto es un mensaje de alerta.',
       buttons: ['OK'],
     });
 
@@ -86,6 +89,6 @@ export class Tab1Page implements OnInit {
   }
 
   mostrarDetallesProfesor() {
-    this.router.navigate(['/professor-info']); 
+    this.router.navigate(['/professor-info']);
   }
 }
