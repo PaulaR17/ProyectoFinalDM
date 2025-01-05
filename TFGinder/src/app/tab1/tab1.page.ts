@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-
-
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 @Component({
   selector: 'app-tab1',
@@ -30,7 +29,7 @@ export class Tab1Page implements OnInit {
   loadProfessorsFromFirebase() {
     this.firestore
       .collection('tfginder')
-      .valueChanges()
+      .valueChanges({ idField: 'id' }) // Incluye el ID del documento
       .subscribe((data: any[]) => {
         console.log('Datos obtenidos:', data); // Verifica los datos
         this.professors = data;
@@ -65,17 +64,53 @@ export class Tab1Page implements OnInit {
   }
 
   like() {
-    // Agregar la clase de animación para like
-    const card = document.getElementById('currentCard');
-    card?.classList.add('like-animation');
-
-    // Esperar a que termine la animación antes de mostrar el siguiente profesor
-    setTimeout(() => {
-      card?.classList.remove('like-animation');
-      this.showNextProfessor();
-    }, 500); // 500ms es la duración de la animación
+    if (!this.currentProfessor) {
+      console.log("No hay profesor actual.");
+      return;
+    }
+  
+    const tfgId = this.currentProfessor.id; // ID único del TFG
+    console.log("Intentando registrar interés en el TFG con ID:", tfgId);
+  
+    // Referencia al documento del TFG usando AngularFirestore
+    const tfgDocRef = this.firestore.doc(`tfginder/${tfgId}`);
+  
+    // Obtener el valor actual de "interesados" y actualizarlo
+    tfgDocRef
+      .get()
+      .subscribe((tfgDoc: any) => {
+        if (!tfgDoc.exists) {
+          console.error("El documento del TFG no existe.");
+          return;
+        }
+  
+        const tfgData = tfgDoc.data();
+        if (!tfgData) {
+          console.error("Los datos del TFG están vacíos.");
+          return;
+        }
+  
+        // Leer el valor actual y actualizarlo
+        let currentInteresados = parseFloat(tfgData['interesados'] || '0.0');
+        const newInteresados = (currentInteresados + 1.0).toFixed(1);
+  
+        // Actualizar el campo en Firestore
+        tfgDocRef
+          .update({
+            interesados: newInteresados,
+          })
+          .then(() => {
+            console.log("Interés registrado correctamente.");
+            this.showNextProfessor(); // Mostrar el siguiente profesor
+          })
+          .catch((error) => {
+            console.error("Error al registrar el interés:", error);
+            alert("Ocurrió un problema al registrar tu interés. Intenta de nuevo.");
+          });
+      });
   }
-
+  
+  
   nope() {
     // Agregar la clase de animación para nope
     const card = document.getElementById('currentCard');
