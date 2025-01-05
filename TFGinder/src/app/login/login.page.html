@@ -1,22 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>TFGinder</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true">
   <div class="login-container">
-    <div class="illustration">
-      <ion-img src="assets/images/TFGinderLogo.png" style="height: 600px; width: 600px;"></ion-img> 
+    <!-- Logo centrado -->
+    <div class="logo">
+      <ion-img src="assets/images/TFGinderLogo.png"></ion-img>
     </div>
 
+    <!-- Formulario de inicio de sesión -->
     <form (ngSubmit)="login()">
       <ion-list>
         <ion-item>
           <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" [(ngModel)]="credentials.email" name="email" required></ion-input>
+          <ion-input
+            type="email"
+            [(ngModel)]="credentials.email"
+            name="email"
+            required
+          ></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Contraseña</ion-label>
-          <ion-input type="password" [(ngModel)]="credentials.password" name="password" required></ion-input>
+          <ion-input
+            type="password"
+            [(ngModel)]="credentials.password"
+            name="password"
+            required
+          ></ion-input>
         </ion-item>
       </ion-list>
 
+      <!-- Botón de inicio de sesión -->
       <ion-button class="login-btn" type="submit" expand="block">Iniciar Sesión</ion-button>
     </form>
   </div>

@@ -4,12 +4,12 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyDRT2ZFBoJcdAjIiHCg7cssIvdBXhvIdWE",
+    apiKey: "AIzaSyDRT2ZfBoJcdAjIiHCg7cssIvdBXhvIdWE",
     authDomain: "datostfginder.firebaseapp.com",
     projectId: "datostfginder",
-    storageBucket: "datostfginder.appspot.com",
-    messagingSenderId: "59439147198",
-    appId: "1:59439147198:web:5c92a099b444639838832f"
+    storageBucket: "datostfginder.firebasestorage.app",
+    messagingSenderId: "594390147198",
+    appId: "1:594390147198:web:5c92a099b444639388382f"
   }
 };
 
