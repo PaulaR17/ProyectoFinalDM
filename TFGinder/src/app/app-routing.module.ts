@@ -27,8 +27,8 @@ const routes: Routes = [
     loadChildren: () => import('./match/match.module').then( m => m.MatchPageModule)
   },
   {
-    path: 'messages',
-    loadChildren: () => import('./messages/messages.module').then( m => m.MessagesPageModule)
+    path: 'messages/:id',
+    loadChildren: () => import('./messages/messages.module').then(m => m.MessagesPageModule)
   },
   {
     path: 'chat',

@@ -20,6 +20,10 @@ const routes: Routes = [
         loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
       },
       {
+        path: 'messages/:id',
+        loadChildren: () => import('../messages/messages.module').then(m => m.MessagesPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1', // Redirige a /tabs/tab1
         pathMatch: 'full'

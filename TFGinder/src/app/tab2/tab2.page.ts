@@ -1,58 +1,29 @@
-import { Component } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ChatService } from '../services/chat.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: './tab2.page.html',
-  styleUrls: ['./tab2.page.scss'],
+  styleUrls: ['./tab2.page.scss']
 })
-export class Tab2Page {
-  chats = [
-    {
-      name: 'Dra. María López',
-      preview: '¡Hola! Me interesa tutorizar tu TFG sobre metodologías ágiles.',
-      time: '12:30',
-      unread: 0,
-      imagen: 'assets/images/Maria.png'
-    },
-    {
-      name: 'Dr. Juan Martínez',
-      preview: '¿Te gustaría explorar un proyecto en Cloud Computing?',
-      time: 'Ayer',
-      unread: 0,
-      imagen: 'assets/images/Juan.png'
-    },
-    {
-      name: 'Dra. Ana García',
-      preview: 'Podemos reunirnos para discutir tu propuesta de Machine Learning',
-      time: 'Lun',
-      unread: 0,
-      imagen: 'assets/images/Ana.png'
-    },
-  ];
+export class Tab2Page implements OnInit {
+  userId: string | null = null;
+  chats: any[] = [];
 
-  currentSegment = 'chats';
+  constructor(private chatService: ChatService, private authService: AuthService) {}
 
-  constructor(private alertController: AlertController,private router: Router) {}
-
-  segmentChanged(event: any) {
-    console.log(event.detail.value);
-    // Aquí puedes agregar la lógica para cada pestaña (home, chats, user)
-  }
-
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'Alert',
-      subHeader: 'Subtitle',
-      message: 'This is an alert message.',
-      buttons: ['OK'],
-    });
-
-    await alert.present();
-  }
-
-  openChat(chat: any) {
-    this.router.navigateByUrl('/chat'); 
+  async ngOnInit() {
+    this.userId = await this.authService.getCurrentUserId();
+    if (this.userId) {
+      console.log('User ID obtenido:', this.userId);
+      this.chatService.getChats(this.userId).subscribe(data => {
+        console.log('Chats obtenidos:', data);
+        this.chats = data;
+      });
+    } else {
+      console.error('No se pudo obtener el ID del usuario');
+      // Opcional: Redirige al usuario a la pantalla de inicio de sesión
+    }
   }
 }

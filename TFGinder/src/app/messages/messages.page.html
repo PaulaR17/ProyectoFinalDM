@@ -1,13 +1,26 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>Messages</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Messages</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div *ngIf="messages.length > 0; else noMessages">
+    <div *ngFor="let message of messages">
+      <div [ngClass]="{'my-message': message.senderId === currentUserId, 'their-message': message.senderId !== currentUserId}">
+        <p>{{ message.text }}</p>
+        <small>{{ message.timestamp | date:'short' }}</small>
+      </div>
+    </div>
+  </div>
+  <ng-template #noMessages>
+    <p style="text-align: center; color: gray;">No hay mensajes aún. ¡Envía uno para empezar!</p>
+  </ng-template>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-input [(ngModel)]="newMessage" placeholder="Escribe un mensaje..."></ion-input>
+    <ion-button (click)="sendMessage()">Enviar</ion-button>
+  </ion-toolbar>
+</ion-footer>

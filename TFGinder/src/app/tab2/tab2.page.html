@@ -1,30 +1,16 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="presentAlert()">
-        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>TFGinder</ion-title>
+    <ion-title>Mis Chats</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div class="chat-container">
-    <ion-list class="chat-list">
-      <ion-item *ngFor="let chat of chats" (click)="openChat(chat)">
-        <ion-avatar slot="start">
-          <ion-img [src]="chat.imagen"></ion-img>
-        </ion-avatar>
-        <ion-label class="chat-info">
-          <h3 class="chat-name">{{ chat.name }}</h3>
-          <p class="chat-preview">{{ chat.preview }}</p>
-        </ion-label>
-        <div slot="end">
-          <p class="chat-time">{{ chat.time }}</p>
-          <ion-badge *ngIf="chat.unread" color="danger">{{ chat.unread }}</ion-badge>
-        </div>
-      </ion-item>
-    </ion-list>
-  </div>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let chat of chats" [routerLink]="['/tabs/messages', chat.id]" button>
+      <ion-label>
+        <h2>{{ chat.lastMessage }}</h2>
+        <p>Último mensaje</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
