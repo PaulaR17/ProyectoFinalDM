@@ -8,7 +8,7 @@
 <ion-content [fullscreen]="true">
   <!-- Contenido para Estudiantes -->
   <div *ngIf="userRole === 'student'; else professorContent">
-    <div class="card-container" *ngIf="currentProfessor; else loading">
+    <div class="card-container" *ngIf="currentProfessor">
       <div class="professor-card" id="currentCard">
         <div class="professor-image">
           <button (click)="mostrarDetallesProfesor()">
@@ -34,45 +34,51 @@
       <ion-button color="primary" class="like-btn" (click)="like()">♥</ion-button>
     </div>
   </div>
-
-  <!-- Contenido para Profesores -->
-  <ng-template #professorContent>
+ <!-- Content for Professors -->
+   <ng-template #professorContent>
     <div *ngIf="userRole === 'professor'">
       <h2>Gestión de Estudiantes Interesados</h2>
-  
-      <!-- Mensaje para listas vacías -->
-      <div *ngIf="!currentProfessor?.['interesadosStudent']?.length; else studentList" class="no-data">
-              <ion-icon class="no-data-icon" name="people-outline"></ion-icon>
+
+      <!-- Empty List Message -->
+      <div *ngIf="!interestedStudents.length; else studentList" class="no-data">
+        <ion-icon class="no-data-icon" name="people-outline"></ion-icon>
         <p>No hay estudiantes interesados en este momento.</p>
       </div>
-  
-      <!-- Lista de estudiantes interesados -->
+
+      <!-- List of Interested Students -->
       <ng-template #studentList>
         <ion-list>
-          <ion-item *ngFor="let studentId of currentProfessor?.['interesadosStudent'] || []">
+          <ion-item *ngFor="let student of interestedStudents">
             <ion-label>
-              ID: {{ studentId }} - Nombre: {{ getStudentName(studentId) }}
+              ID: {{ student.id }} - Nombre: {{ student.name }}
             </ion-label>
             <ion-buttons slot="end">
-              <ion-button color="success" (click)="acceptStudent(currentProfessor.id, studentId)">
+              <ion-button
+                color="success"
+                *ngIf="currentProfessor?.id"
+                (click)="acceptStudent(currentProfessor.id, student.id)"
+              >
                 Aceptar
               </ion-button>
-              <ion-button color="danger" (click)="rejectStudent(currentProfessor.id, studentId)">
+              <ion-button
+                color="danger"
+                *ngIf="currentProfessor?.id"
+                (click)="rejectStudent(currentProfessor.id, student.id)"
+              >
                 Rechazar
               </ion-button>
             </ion-buttons>
-          </ion-item>
+          </ion-item>          
         </ion-list>
-        
       </ng-template>
     </div>
   </ng-template>
-  
-  <!-- Indicador de Carga General -->
+
+  <!-- General Loading Indicator -->
   <ng-template #loading>
     <div class="loading">
       <ion-spinner name="crescent"></ion-spinner>
       <p>Cargando datos...</p>
     </div>
   </ng-template>
-</ion-content>
+</ion-content> 

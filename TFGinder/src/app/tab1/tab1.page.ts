@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; 
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -53,34 +53,91 @@ export class Tab1Page implements OnInit {
     });
   }
   
+  fetchUserRole() {
+    if (!this.userId) {
+      console.error('El userId no está definido.');
+      alert('No se encontró un usuario autenticado. Por favor, inicia sesión nuevamente.');
+      return;
+    }
   
-  // Función para obtener el rol del usuario
-fetchUserRole() {
-  if (!this.userId) {
-    console.error('El userId no está definido.');
-    return;
-  }
-
-
-
-  this.firestore
-    .collection('users')
-    .doc(this.userId)
-    .get()
-    .subscribe(
-      (userDoc) => {
-        if (userDoc.exists) {
-          const userData = userDoc.data() as { role: string } | undefined; // Aseguramos el tipo
-          this.userRole = userData?.role || null;
-          console.log('Rol del usuario:', this.userRole);
-        } else {
-          console.error('No se encontró el documento del usuario.');
-          alert('No se pudo cargar la información del usuario.');
+    this.firestore
+      .collection('users')
+      .doc(this.userId)
+      .get()
+      .subscribe(
+        (userDoc) => {
+          if (userDoc.exists) {
+            const userData = userDoc.data() as { role: string | undefined };
+            this.userRole = userData?.role || null;
+  
+            console.log('Rol del usuario:', this.userRole);
+  
+            if (this.userRole === 'professor') {
+              this.handleProfessorRole();
+            } else if (this.userRole === 'student') {
+              this.handleStudentRole();
+            } else {
+              console.warn('El rol del usuario no es válido o está vacío.');
+              alert('No se pudo determinar el rol del usuario. Por favor, verifica tu cuenta.');
+            }
+          } else {
+            console.error('No se encontró el documento del usuario.');
+            alert('No se pudo cargar la información del usuario. Por favor, verifica tu cuenta.');
+          }
+        },
+        (error) => {
+          console.error('Error al obtener el rol del usuario:', error);
+          alert('Hubo un error al cargar el rol del usuario. Intenta de nuevo más tarde.');
         }
-      },
-      (error) => console.error('Error al obtener el rol del usuario:', error)
-    );
-}
+      );
+  }
+  
+  
+  handleProfessorRole() {
+    console.log('El usuario es un profesor.');
+    this.fetchProfessorData();
+  }
+  
+  handleStudentRole() {
+    console.log('El usuario es un estudiante.');
+    this.loadProfessorsFromFirebase();
+  }
+  
+  
+  interestedStudents: { id: string; name: string }[] = [];
+  fetchProfessorData() {
+    if (!this.userId) {
+      console.error('El userId no está definido.');
+      return;
+    }
+  
+    this.firestore
+      .collection('users')
+      .doc(this.userId)
+      .valueChanges({ idField: 'id' }) // Include the Firestore document ID
+      .subscribe((data) => {
+        if (data) {
+          this.currentProfessor = data;
+          console.log('Current professor data:', this.currentProfessor);
+          const studentIds = this.currentProfessor?.['interesadosStudent'] || [];
+          this.loadInterestedStudents(studentIds);
+        } else {
+          console.error('No se encontró información para el profesor.');
+        }
+      });
+  }
+  
+  loadInterestedStudents(studentIds: string[]) {
+    this.interestedStudents = []; // Reset the array
+    studentIds.forEach(async (studentId) => {
+      const studentName = await this.getStudentName(studentId);
+      this.interestedStudents.push({ id: studentId, name: studentName });
+    });
+  }
+  
+  
+
+  
 // Función para agregar un usuario a Firestore
 async addUser(uid: string, name: string, role: string) {
   if (!uid || !name || !role) {
@@ -104,31 +161,29 @@ async addUser(uid: string, name: string, role: string) {
   }
 }
 studentNamesCache: { [id: string]: string } = {};
-  getStudentName(studentId: string): string {
-    // Si el nombre ya está en caché, devolverlo directamente
-    if (this.studentNamesCache[studentId]) {
-      return this.studentNamesCache[studentId];
-    }
-  
-    // Si no está en caché, consultar Firestore
-    this.firestore
-      .collection('users')
-      .doc(studentId)
-      .get()
-      .subscribe((doc) => {
-        if (doc.exists) {
-          const studentData = doc.data() as UserData; // Especificar el tipo de los datos
-          const studentName = studentData.name || 'Desconocido'; // Ahora TypeScript reconoce name
-          this.studentNamesCache[studentId] = studentName; // Almacenar en caché
-        } else {
-          
-          this.studentNamesCache[studentId] = 'Desconocido'; // Valor por defecto si no existe
-        }
-      });
-  
-    // Mientras se carga el nombre, devolver un valor temporal
-    return 'Cargando...';
+async getStudentName(studentId: string): Promise<string> {
+  if (this.studentNamesCache[studentId]) {
+    return this.studentNamesCache[studentId];
   }
+
+  try {
+    const doc = await this.firestore.collection('users').doc(studentId).ref.get();
+    if (doc.exists) {
+      const studentData = doc.data() as UserData;
+      const studentName = studentData.name || 'Desconocido';
+      this.studentNamesCache[studentId] = studentName;
+      return studentName;
+    }
+  } catch (error) {
+    console.error(`Error fetching name for student ${studentId}:`, error);
+  }
+
+  this.studentNamesCache[studentId] = 'Desconocido';
+  return 'Desconocido';
+}
+
+  
+   
   // Función para cargar TFGs de profesores
   loadProfessorsFromFirebase() {
     this.firestore
@@ -152,7 +207,7 @@ studentNamesCache: { [id: string]: string } = {};
     }
     this.currentProfessor = this.professors[this.currentProfessorIndex];
   }
-
+ 
   
   async like() {
     if (!this.userId) {
@@ -269,35 +324,54 @@ studentNamesCache: { [id: string]: string } = {};
   }
   
   
+  async acceptStudent(professorId: string | undefined, studentId: string) {
+    if (!professorId) {
+      console.error('professorId is undefined.');
+      alert('No se pudo identificar al profesor. Por favor, inténtalo de nuevo.');
+      return;
+    }
   
-  async acceptStudent(professorId: string, studentId: string) {
     const professorDocRef = this.firestore.collection('users').doc(professorId);
     const userDocRef = this.firestore.collection('users').doc(studentId);
   
-    await this.firestore.firestore.runTransaction(async (transaction) => {
-      const professorDoc = await transaction.get(professorDocRef.ref);
-      if (!professorDoc.exists) throw new Error('El profesor no existe.');
+    try {
+      await this.firestore.firestore.runTransaction(async (transaction) => {
+        const professorDoc = await transaction.get(professorDocRef.ref);
+        if (!professorDoc.exists) {
+          console.error('Professor document not found:', professorId);
+          throw new Error('El profesor no existe.');
+        }
   
-      const professorData = professorDoc.data() as { interesadosStudent?: string[]; acceptedStudents?: string[] };
-      const interesadosStudent = professorData.interesadosStudent || [];
-      const acceptedStudents = professorData.acceptedStudents || [];
+        const professorData = professorDoc.data() as {
+          interesadosStudent?: string[];
+          acceptedStudents?: string[];
+        };
+        const interesadosStudent = professorData.interesadosStudent || [];
+        const acceptedStudents = professorData.acceptedStudents || [];
   
-      if (!interesadosStudent.includes(studentId)) {
-        throw new Error('El estudiante no está en la lista de interesados.');
-      }
+        if (!interesadosStudent.includes(studentId)) {
+          console.warn('Student not in interesadosStudent:', studentId);
+          throw new Error('El estudiante no está en la lista de interesados.');
+        }
   
-      transaction.update(professorDocRef.ref, {
-        interesadosStudent: interesadosStudent.filter((id) => id !== studentId),
-        acceptedStudents: [...acceptedStudents, studentId],
+        transaction.update(professorDocRef.ref, {
+          interesadosStudent: interesadosStudent.filter((id) => id !== studentId),
+          acceptedStudents: [...acceptedStudents, studentId],
+        });
+  
+        transaction.update(userDocRef.ref, {
+          pendingTFG: null,
+        });
+  
+        console.log(`Estudiante ${studentId} aceptado.`);
       });
-  
-      transaction.update(userDocRef.ref, {
-        pendingTFG: null, // Marcar como aceptado
-      });
-  
-      console.log(`Estudiante ${studentId} aceptado.`);
-    });
+    } catch (error) {
+      console.error('Error in acceptStudent:', error);
+      
+    }
   }
+  
+  
   async rejectStudent(professorId: string, studentId: string) {
     const professorDocRef = this.firestore.collection('users').doc(professorId);
     const userDocRef = this.firestore.collection('users').doc(studentId);
@@ -344,5 +418,3 @@ studentNamesCache: { [id: string]: string } = {};
     this.router.navigate(['/professor-info']);
   }
 }
-
-
