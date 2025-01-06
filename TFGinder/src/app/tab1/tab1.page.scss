@@ -111,5 +111,108 @@ ion-content {
   background: #ff6b6b;
   color: white;
 }
+/* Fondo general */
+ion-content {
+  --background: #f7f9fc; /* Fondo suave */
+}
 
-// ... demás estilos
+/* Encabezado */
+ion-toolbar {
+  --background: #2a2a2a; /* Encabezado oscuro */
+  --color: #0a0101; /* Texto blanco */
+}
+
+/* Contenedor del mensaje */
+.loading,
+.no-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 70vh;
+  font-size: 1.2rem;
+  color: #666666; /* Texto gris oscuro */
+}
+
+/* Tarjetas de estudiantes */
+.professor-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 10px;
+}
+
+.professor-image ion-img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin: 0 auto;
+  display: block;
+}
+/* Información del profesor */
+.professor-info {
+  padding: 20px;
+}
+.professor-name {
+  font-size: 1.5em;
+  margin: 0;
+  color: #666;
+}
+.professor-department,
+.professor-interests {
+  font-size: 0.9em;
+  color: #777;
+  margin: 5px 0;
+}
+
+/* Botones de acción */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+.button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  transition: transform 0.2s;
+}
+.button:hover {
+  transform: scale(1.1);
+}
+.like-btn {
+  background: #4caf50; /* Verde */
+  color: white;
+}
+.nope-btn {
+  background: #f44336; /* Rojo */
+  color: white;
+}
+
+/* Mensajes de carga o vacío */
+.loading,
+.no-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 70vh;
+  font-size: 1.2rem;
+  color: #666666; /* Texto gris oscuro */
+}
+h2 {
+  font-size: 1.8rem;
+  color: #000000; /* Color negro */
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold; /* Opcional: hace que el texto sea más llamativo */
+}
