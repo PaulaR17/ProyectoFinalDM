@@ -1,6 +1,5 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start"></ion-buttons>
     <ion-title>TFGinder</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -34,53 +33,58 @@
       <ion-button color="primary" class="like-btn" (click)="like()">♥</ion-button>
     </div>
   </div>
- <!-- Content for Professors -->
-   <ng-template #professorContent>
+
+  <!-- Contenido para Profesores -->
+  <ng-template #professorContent>
     <div *ngIf="userRole === 'professor'">
       <h2>Gestión de Estudiantes Interesados</h2>
 
-      <!-- Empty List Message -->
+      <!-- Mensaje si la lista está vacía -->
       <div *ngIf="!interestedStudents.length; else studentList" class="no-data">
         <ion-icon class="no-data-icon" name="people-outline"></ion-icon>
         <p>No hay estudiantes interesados en este momento.</p>
       </div>
 
-      <!-- List of Interested Students -->
+      <!-- Lista de estudiantes interesados -->
       <ng-template #studentList>
         <ion-list>
           <ion-item *ngFor="let student of interestedStudents">
             <ion-label>
               ID: {{ student.id }} - Nombre: {{ student.name }}
             </ion-label>
-            <ion-buttons slot="end">
-              <ion-button
-              color="success"
-              *ngIf="currentProfessor?.id"
-              (click)="acceptStudent(currentProfessor.id, student.id, currentProfessor.id)"
-            >
-              Aceptar
-            </ion-button>
-            
 
+            <!-- Botones para aceptar por cada TFG -->
+            <div *ngFor="let tfgId of currentProfessor?.tfg_professor">
               <ion-button
-                color="danger"
-                *ngIf="currentProfessor?.id"
-                (click)="rejectStudent(currentProfessor.id, student.id)"
+                color="success"
+                *ngIf="tfgId && student?.id"
+                (click)="acceptStudent(currentProfessor.id, student.id, tfgId)"
               >
-                Rechazar
+                Aceptar ({{ tfgId.replace('doc_', '') }})
               </ion-button>
-            </ion-buttons>
-          </ion-item>          
+            </div>
+
+            <!-- Botón de rechazar (fuera del bucle de TFGs para que sea global por estudiante) -->
+            <ion-button
+              color="danger"
+              *ngIf="student?.id"
+              (click)="rejectStudent(currentProfessor.id, student.id)"
+            >
+              Rechazar
+            </ion-button>
+
+
+          </ion-item>
         </ion-list>
       </ng-template>
     </div>
   </ng-template>
 
-  <!-- General Loading Indicator -->
+  <!-- Indicador de carga -->
   <ng-template #loading>
     <div class="loading">
       <ion-spinner name="crescent"></ion-spinner>
       <p>Cargando datos...</p>
     </div>
   </ng-template>
-</ion-content> 
+</ion-content>
