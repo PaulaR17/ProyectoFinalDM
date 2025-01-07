@@ -326,6 +326,7 @@ async getStudentName(studentId: string): Promise<string> {
 
     const professorDocRef = this.firestore.collection('users').doc(this.currentProfessor.id);
     const studentDocRef = this.firestore.collection('users').doc(studentId);
+    const chatsCollectionRef = this.firestore.collection('Chats'); // Referencia a la colección de chats
 
     try {
       await this.firestore.firestore.runTransaction(async (transaction) => {
@@ -366,13 +367,23 @@ async getStudentName(studentId: string): Promise<string> {
 
           // Actualizamos el estado del estudiante
           transaction.update(studentDocRef.ref, {
-            assignedTFG: tfgId, // Asignar el TFG correcto
-            pendingTFG: false,  // Eliminar el estado de pendiente
-            pending_tfg: [],    // Limpiar la lista de TFG pendientes
+            assignedTFG: tfgId,
+            pendingTFG: false,
+            pending_tfg: [],
           });
 
-          console.log(`Estudiante ${studentId} aceptado en el TFG ${tfgId}.`);
-          alert('¡Estudiante aceptado correctamente!');
+          // Crear un chat entre el profesor y el estudiante
+          const chatData = {
+            participants: [this.currentProfessor.id, studentId],
+            lastMessage: 'Hola, ¿cómo estás?',
+            timestamp: new Date().toISOString(),
+            messages: [], // Campo vacío para mensajes futuros
+          };
+
+          await chatsCollectionRef.add(chatData);
+
+          console.log(`Estudiante ${studentId} aceptado en el TFG ${tfgId} y chat creado.`);
+          alert('¡Estudiante aceptado y chat creado correctamente!');
         } else if (action === 'reject') {
           const updatedInteresados = interesadosStudent.filter((id: string) => id !== studentId);
 
@@ -390,6 +401,7 @@ async getStudentName(studentId: string): Promise<string> {
       alert(`Ocurrió un error al ${action === 'accept' ? 'aceptar' : 'rechazar'} al estudiante.`);
     }
   }
+
 
 
 
