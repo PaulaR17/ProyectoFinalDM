@@ -63,4 +63,8 @@ export class Tab3Page implements OnInit {
     // Navegar a la página de detalles del TFG y pasar los datos del TFG
     this.router.navigateByUrl('/tfg-student'); 
   }
+
+  salirAplicacion(){
+    this.router.navigate(['/login']);
+  }
 }
