@@ -187,18 +187,18 @@ async getStudentName(studentId: string): Promise<string> {
   // Función para cargar TFGs de profesores
   loadProfessorsFromFirebase() {
     this.firestore
-      .collection('tfginder')
+      .collection('tfginder', (ref) => ref.where('Estado', '==', 'Libre')) // Filtrar por estado "Libre"
       .valueChanges({ idField: 'id' })
       .subscribe((data: any[]) => {
         this.professors = data;
         if (this.professors.length > 0) {
           this.currentProfessor = this.professors[this.currentProfessorIndex];
         } else {
-          console.log('No se encontraron TFGs disponibles.');
+          console.log('No se encontraron TFGs disponibles con estado "Libre".');
         }
       });
   }
-
+  
   // Mostrar siguiente profesor
   showNextProfessor() {
     this.currentProfessorIndex++;
