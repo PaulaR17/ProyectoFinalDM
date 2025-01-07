@@ -5,51 +5,63 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ tfg.title }}</ion-title>
+    <ion-title>{{ tfg?.title || 'Detalles del TFG' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="details-container">
+    <!-- Estado del TFG -->
     <div class="info-section">
       <div class="info-label">Estado Actual</div>
-      <ion-badge class="status-badge" [color]="tfg.status === 'En Curso' ? 'primary' : tfg.status === 'Evaluado' ? 'warning' : 'success'">{{ tfg.status }}</ion-badge>
+      <ion-badge class="status-badge" [color]="tfg?.estado === 'En Curso' ? 'primary' : tfg?.estado === 'Evaluado' ? 'warning' : 'success'">
+        {{ tfg?.estado || 'No disponible' }}
+      </ion-badge>
     </div>
 
-    <div class="info-section">
+    <!-- Estudiante -->
+    <div class="info-section" *ngIf="tfg?.estudiante">
       <div class="info-label">Estudiante</div>
-      <div class="info-content">{{ tfg.student }}</div>
+      <div class="info-content">{{ tfg.estudiante }}</div>
     </div>
 
-    <div class="info-section">
+    <!-- Tutor -->
+    <div class="info-section" *ngIf="tfg?.tutor">
       <div class="info-label">Tutor</div>
       <div class="info-content">{{ tfg.tutor }}</div>
     </div>
 
+    <!-- Descripción -->
     <div class="info-section">
       <div class="info-label">Descripción</div>
-      <div class="description">{{ tfg.description }}</div>
+      <div class="description">{{ tfg?.descripcion || 'No disponible' }}</div>
     </div>
 
+    <!-- Modificar Estado -->
     <div class="info-section">
       <div class="info-label">Modificar Estado</div>
-      <ion-select class="status-selector" [(ngModel)]="tfg.status" interface="popover">
+      <ion-select class="status-selector" [(ngModel)]="tfg.estado" interface="popover">
         <ion-select-option value="En Curso">En Curso</ion-select-option>
         <ion-select-option value="Evaluado">Evaluado</ion-select-option>
         <ion-select-option value="Terminado">Terminado</ion-select-option>
       </ion-select>
     </div>
 
+    <!-- Calificación -->
     <div class="info-section">
       <div class="info-label">Calificación</div>
-      <ion-input type="number" class="grade-input" min="0" max="10" step="0.1" placeholder="0.0" [(ngModel)]="tfg.calificacion"></ion-input>
+      <ion-input
+        type="number"
+        class="grade-input"
+        min="0"
+        max="10"
+        step="0.1"
+        placeholder="0.0"
+        [(ngModel)]="tfg.nota"
+      ></ion-input>
     </div>
 
-    <div class="info-section">
-      <div class="info-label">Notas y Comentarios</div>
-      <ion-textarea class="notes-input" placeholder="Añade notas sobre el progreso o aspectos a mejorar..." [(ngModel)]="tfg.notas"></ion-textarea>
-    </div>
-
+    <!-- Botón Guardar -->
     <ion-button class="save-button" expand="block" (click)="saveChanges()">Guardar Cambios</ion-button>
   </div>
 </ion-content>

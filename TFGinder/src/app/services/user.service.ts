@@ -114,6 +114,7 @@ export class UserService {
       }
 
       return {
+        id: tfgId,
         title: tfgDoc['Titulo del TFG'] || 'Título no disponible',
         professor: tfgDoc['Tutor/a'] || 'Tutor no asignado',
         student: tfgDoc['Estudiante'] || 'Estudiante no asignado',

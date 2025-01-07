@@ -5,30 +5,42 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{ tfg.title }}</ion-title>
+    <ion-title>{{ tfg?.title || 'Detalles del TFG' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="details-container">
+    <!-- Estado del TFG -->
     <div class="info-section">
       <div class="info-label">Estado Actual</div>
-      <ion-badge class="status-badge" [color]="tfg.status === 'En Curso' ? 'primary' : tfg.status === 'Evaluado' ? 'warning' : 'success'">{{ tfg.status }}</ion-badge>
+      <ion-badge class="status-badge" [color]="tfg?.estado === 'En Curso' ? 'primary' : tfg?.estado === 'Evaluado' ? 'warning' : 'success'">
+        {{ tfg?.estado || 'No disponible' }}
+      </ion-badge>
     </div>
 
-    <div class="info-section">
+    <!-- Estudiante -->
+    <div class="info-section" *ngIf="tfg?.estudiante">
       <div class="info-label">Estudiante</div>
-      <div class="info-content">{{ tfg.student }}</div>
+      <div class="info-content">{{ tfg.estudiante }}</div>
     </div>
 
-    <div class="info-section">
+    <!-- Tutor -->
+    <div class="info-section" *ngIf="tfg?.tutor">
       <div class="info-label">Tutor</div>
       <div class="info-content">{{ tfg.tutor }}</div>
     </div>
 
+    <!-- Descripción -->
     <div class="info-section">
       <div class="info-label">Descripción</div>
-      <div class="description">{{ tfg.description }}</div>
+      <div class="description">{{ tfg?.descripcion || 'No disponible' }}</div>
+    </div>
+
+    <!-- Calificación -->
+    <div class="info-section">
+      <div class="info-label">Calificación</div>
+      <div class="info-content">{{ tfg?.nota || 'Pendiente de calificar' }}</div>
     </div>
   </div>
 </ion-content>

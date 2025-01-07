@@ -39,13 +39,13 @@ export class Tab3Page implements OnInit {
   }
 
   mostrarDetallesTFG(tfg: any) {
-    // Redirige según el rol
+    console.log('Navegando con tfgId:', tfg.id); // Verifica si el ID se imprime correctamente
     if (this.userService.getRole() === 'student') {
       this.router.navigate(['/tfg-student'], { state: { tfgId: tfg.id } });
     } else {
       this.router.navigate(['/tfg-professor'], { state: { tfgId: tfg.id } });
     }
-  }
+  }  
 
   salirAplicacion(){
     this.router.navigate(['/login']);
