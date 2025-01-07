@@ -32,9 +32,10 @@ export class LoginPage {
         this.credentials.email,
         this.credentials.password
       );
-
+  
       const uid = userCredential.user?.uid; // UID del usuario autenticado
-
+      const email = userCredential.user?.email || ''; // Email del usuario autenticado
+  
       if (uid) {
         // Obtener el documento del usuario desde Firestore
         const userDoc = await this.firestore
@@ -43,13 +44,20 @@ export class LoginPage {
           .valueChanges()
           .pipe(first()) // Obtiene un único valor del observable
           .toPromise();
-
+  
         if (userDoc) {
           const userData: any = userDoc;
-
-          // Guardar el UID y rol en el servicio compartido
-          this.userService.setUser(uid, userData.role);
-
+  
+          // Guardar los datos del usuario en el servicio compartido
+          this.userService.setUser(
+            uid,
+            userData.role,
+            userData.name,
+            userData.degree,
+            userData.image,
+            email
+          );
+  
           // Redirigir al componente de tabs
           this.router.navigateByUrl('/tabs');
         } else {

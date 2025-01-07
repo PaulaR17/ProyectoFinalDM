@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router'; 
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-tab3',
   templateUrl: './tab3.page.html',
   styleUrls: ['./tab3.page.scss'],
 })
-export class Tab3Page {
+export class Tab3Page implements OnInit {
   user = {
-    name: 'Carlos Rodríguez',
-    career: 'Ingeniería Informática',
-    email: 'carlos.rodriguez@universidad.es',
-    imagen: 'assets/images/Usuario.png'
+    name: '',
+    degree: '',
+    email: '',
+    image: 'assets/images/default.png', // Imagen por defecto
   };
 
   tfgs = [
@@ -22,11 +23,20 @@ export class Tab3Page {
 
   currentSegment = 'user';
 
-  constructor(private alertController: AlertController,private router: Router) {}
+  constructor(private alertController: AlertController,private router: Router, private userService: UserService) {}
 
   segmentChanged(event: any) {
     console.log(event.detail.value);
     // Aquí puedes agregar la lógica para cada pestaña (home, chats, user)
+  }
+
+  ngOnInit() {
+    // Cargar los datos del usuario desde el servicio compartido
+    this.user.name = this.userService.getName() || 'Nombre no disponible';
+    this.user.degree = this.userService.getDegree() || 'Carrera no disponible';
+    this.user.email = this.userService.getEmail() || 'Email no disponible';
+    const userImage = this.userService.getImage();
+    this.user.image = userImage && userImage !== 'null' ? userImage : 'assets/images/default.png';
   }
 
   async presentAlert() {
