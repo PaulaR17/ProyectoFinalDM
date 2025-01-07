@@ -54,12 +54,14 @@
             </ion-label>
             <ion-buttons slot="end">
               <ion-button
-                color="success"
-                *ngIf="currentProfessor?.id && currentProfessor?.tfgid"
-                (click)="acceptStudent(currentProfessor.id, student.id, currentProfessor.tfgid)"
-              >
-                Aceptar
-              </ion-button>
+              color="success"
+              *ngIf="currentProfessor?.id"
+              (click)="acceptStudent(currentProfessor.id, student.id, currentProfessor.id)"
+            >
+              Aceptar
+            </ion-button>
+            
+
               <ion-button
                 color="danger"
                 *ngIf="currentProfessor?.id"
@@ -68,7 +70,7 @@
                 Rechazar
               </ion-button>
             </ion-buttons>
-          </ion-item>
+          </ion-item>          
         </ion-list>
       </ng-template>
     </div>
@@ -81,4 +83,4 @@
       <p>Cargando datos...</p>
     </div>
   </ng-template>
-</ion-content>
+</ion-content> 
