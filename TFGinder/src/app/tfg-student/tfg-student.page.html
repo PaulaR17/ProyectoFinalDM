@@ -38,7 +38,7 @@
     </div>
 
     <!-- Calificación -->
-    <div class="info-section">
+    <div class="info-section" *ngIf="tfg?.estado != 'Libre'">
       <div class="info-label">Calificación</div>
       <div class="info-content">{{ tfg?.nota || 'Pendiente de calificar' }}</div>
     </div>
