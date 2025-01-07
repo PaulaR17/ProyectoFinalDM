@@ -5,34 +5,26 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="messages.length > 0; else noMessages">
-    <div *ngFor="let message of messages">
-      <div
-        class="message"
-        [ngClass]="{
-          'my-message': message.senderId === currentUserId,
-          'their-message': message.senderId !== currentUserId
-        }"
-      >
-        <strong>{{ message.senderName }}</strong>
+  <ion-list>
+    <ion-item *ngFor="let message of messages">
+      <ion-label>
+        <h3>{{ message.senderName || 'Usuario desconocido' }}</h3>
         <p>{{ message.text }}</p>
-        <small>{{ message.timestamp | date: 'short' }}</small>
-      </div>
-    </div>
-  </div>
-  <ng-template #noMessages>
-    <p style="text-align: center; color: gray;">No hay mensajes aún. ¡Envía uno para empezar!</p>
-  </ng-template>
+        <span>{{ message.timestamp | date: 'short' }}</span>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-input
-      [(ngModel)]="newMessage"
-      placeholder="Escribe un mensaje..."
-      (keyup.enter)="sendMessage()"
-    ></ion-input>
-    <ion-button (click)="sendMessage()" color="primary" [disabled]="!newMessage.trim()">
+    <ion-item>
+      <ion-input
+        placeholder="Escribe un mensaje..."
+        [(ngModel)]="newMessage"
+      ></ion-input>
+    </ion-item>
+    <ion-button expand="block" (click)="sendMessage()" slot="end" color="primary">
       Enviar
     </ion-button>
   </ion-toolbar>
