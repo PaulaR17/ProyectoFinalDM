@@ -1,5 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { first } from 'rxjs/operators';
+
+interface TFGDocument {
+  'Titulo del TFG'?: string;
+  Estado?: string;
+  Estudiante?: string;
+  'Tutor/a'?: string;
+  Descripcion?: string;
+  Nota?: number | null;
+}
 
 @Component({
   selector: 'app-tfg-professor',
@@ -7,27 +18,73 @@ import { Router } from '@angular/router';
   styleUrls: ['./tfg-professor.page.scss'],
 })
 export class TFGProfessorPage implements OnInit {
-  tfg = {
-    title: 'Sistema de IA para Detección de Fraude',
-    status: 'En Curso',
-    student: 'María López',
-    tutor: 'Dr. Antonio García',
-    description: 'Desarrollo de un sistema de detección de fraude basado en inteligencia artificial, utilizando técnicas de machine learning y análisis de patrones para identificar transacciones sospechosas en tiempo real.',
-    calificacion: null,
-    notas: ''
-  };
+  tfg: any = null; // Aquí se almacenarán los datos del TFG
+  tfgId: string | null = null; // ID del TFG que se va a cargar
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private firestore: AngularFirestore) {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    // Obtener el ID del TFG desde el estado de navegación
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.tfgId = navigation.extras.state['tfgId'];
+      console.log('ID del TFG recibido (Profesor):', this.tfgId);
+    }
 
-  goBack() {
-    this.router.navigateByUrl('/professor-profile'); // O la ruta a la que quieras redirigir
+    if (this.tfgId) {
+      // Intentar cargar los datos del TFG desde Firestore
+      try {
+        const tfgDoc = (await this.firestore
+          .collection('tfginder')
+          .doc<TFGDocument>(this.tfgId)
+          .valueChanges()
+          .pipe(first())
+          .toPromise()) as TFGDocument | null;
+
+        console.log('Datos del TFG recibido:', tfgDoc);
+        if (tfgDoc) {
+          this.tfg = {
+            id: this.tfgId,
+            title: tfgDoc['Titulo del TFG'] || 'Título no disponible',
+            estado: tfgDoc.Estado || 'No disponible',
+            estudiante: tfgDoc.Estudiante || 'No asignado',
+            tutor: tfgDoc['Tutor/a'] || 'No asignado',
+            descripcion: tfgDoc.Descripcion || 'No disponible',
+            nota: tfgDoc.Nota || null,
+          };
+        } else {
+          console.error(`No se encontraron datos para el TFG con ID ${this.tfgId}`);
+        }
+      } catch (error) {
+        console.error('Error al cargar el TFG:', error);
+      }
+    } else {
+      console.error('No se recibió ningún ID de TFG.');
+    }
   }
 
-  saveChanges() {
-    console.log('Cambios guardados:', this.tfg);
-    // Aquí iría la lógica para guardar los cambios en la base de datos o API
-    alert('Cambios guardados correctamente');
+  goBack() {
+    this.router.navigateByUrl('/tabs/tab3'); // Vuelve a la lista de TFGs
+  }
+
+  async saveChanges() {
+    if (this.tfgId && this.tfg) {
+      try {
+        await this.firestore
+          .collection('tfginder')
+          .doc(this.tfgId)
+          .update({
+            Estado: this.tfg.estado,
+            Nota: this.tfg.nota,
+          });
+        console.log('Cambios guardados correctamente');
+        alert('Cambios guardados correctamente');
+      } catch (error) {
+        console.error('Error al guardar los cambios:', error);
+        alert('Error al guardar los cambios');
+      }
+    } else {
+      console.error('No hay datos del TFG para guardar.');
+    }
   }
 }

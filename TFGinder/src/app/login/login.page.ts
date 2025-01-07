@@ -54,8 +54,8 @@ export class LoginPage {
             userData.role,
             userData.name,
             userData.degree,
-            userData.image,
-            email
+            email,
+            userData.image
           );
   
           // Redirigir al componente de tabs
