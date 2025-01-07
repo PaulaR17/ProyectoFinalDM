@@ -78,6 +78,17 @@ ion-content {
   color: #777;
 }
 
+ion-buttons.button-group {
+  display: flex;
+  gap: 10px; /* Espacio entre botones */
+  justify-content: space-between;
+}
+
+ion-button {
+  flex: 1; /* Ambos botones ocupan el mismo espacio */
+  text-align: center;
+}
+
 .buttons {
   display: flex;
   justify-content: center;

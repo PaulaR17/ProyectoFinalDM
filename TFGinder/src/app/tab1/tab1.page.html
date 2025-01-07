@@ -29,8 +29,8 @@
     </div>
 
     <div class="buttons">
-      <ion-button color="danger" class="nope-btn" (click)="nope()">✕</ion-button>
-      <ion-button color="primary" class="like-btn" (click)="like()">♥</ion-button>
+      <ion-button color="danger" class="nope-btn" expand="block" (click)="nope()">✕</ion-button>
+      <ion-button color="primary" class="like-btn" expand="block" (click)="like()">♥</ion-button>
     </div>
   </div>
 
@@ -50,30 +50,19 @@
         <ion-list>
           <ion-item *ngFor="let student of interestedStudents">
             <ion-label>
-              ID: {{ student.id }} - Nombre: {{ student.name }}
+              <p><strong>ID:</strong> {{ student.id }}</p>
+              <p><strong>Nombre:</strong> {{ student.name }}</p>
             </ion-label>
 
-            <!-- Botones para aceptar por cada TFG -->
-            <div *ngFor="let tfgId of currentProfessor?.tfg_professor">
-              <ion-button
-                color="success"
-                *ngIf="tfgId && student?.id"
-                (click)="acceptStudent(currentProfessor.id, student.id, tfgId)"
-              >
-                Aceptar ({{ tfgId.replace('doc_', '') }})
+            <!-- Botones agrupados -->
+            <ion-buttons slot="end" class="button-group">
+              <ion-button color="success" expand="block" (click)="acceptStudent(student.id)">
+                Aceptar
               </ion-button>
-            </div>
-
-            <!-- Botón de rechazar (fuera del bucle de TFGs para que sea global por estudiante) -->
-            <ion-button
-              color="danger"
-              *ngIf="student?.id"
-              (click)="rejectStudent(currentProfessor.id, student.id)"
-            >
-              Rechazar
-            </ion-button>
-
-
+              <ion-button color="danger" expand="block" (click)="rejectStudent(student.id)">
+                Rechazar
+              </ion-button>
+            </ion-buttons>
           </ion-item>
         </ion-list>
       </ng-template>

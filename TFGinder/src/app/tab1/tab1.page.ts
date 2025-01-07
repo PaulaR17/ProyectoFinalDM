@@ -117,11 +117,18 @@ export class Tab1Page implements OnInit {
     this.firestore
       .collection('users')
       .doc(this.userId)
-      .valueChanges({ idField: 'id' }) // Include the Firestore document ID
+      .valueChanges({ idField: 'id' }) // Incluye el ID del documento
       .subscribe((data) => {
         if (data) {
           this.currentProfessor = data;
-          console.log('Current professor data:', this.currentProfessor);
+
+          // Asegurar que tfg_professor es un array
+          if (!Array.isArray(this.currentProfessor?.tfg_professor)) {
+            this.currentProfessor.tfg_professor = [];
+          }
+
+          console.log('Datos del profesor actual:', this.currentProfessor);
+
           const studentIds = this.currentProfessor?.['interesadosStudent'] || [];
           this.loadInterestedStudents(studentIds);
         } else {
@@ -129,6 +136,8 @@ export class Tab1Page implements OnInit {
         }
       });
   }
+
+
 
   loadInterestedStudents(studentIds: string[]) {
     this.interestedStudents = []; // Reiniciar la lista de estudiantes
@@ -301,109 +310,92 @@ async getStudentName(studentId: string): Promise<string> {
     }
   }
 
-  async acceptStudent(professorId: string, studentId: string, tfgId: string) {
-    if (!professorId || !studentId || !tfgId) {
-      console.error('Parámetros incompletos en acceptStudent:', { professorId, studentId, tfgId });
-      alert('No se puede aceptar al estudiante porque faltan datos.');
+  async acceptStudent(studentId: string): Promise<void> {
+    await this.handleStudentAction(studentId, 'accept');
+  }
+
+  async rejectStudent(studentId: string): Promise<void> {
+    await this.handleStudentAction(studentId, 'reject');
+  }
+
+  private async handleStudentAction(studentId: string, action: 'accept' | 'reject'): Promise<void> {
+    if (!this.currentProfessor || !this.currentProfessor.id) {
+      console.error('No hay un profesor actual definido.');
       return;
     }
 
-    console.log('Datos en acceptStudent:', { professorId, studentId, tfgId });
-
-    const professorDocRef = this.firestore.collection('users').doc(professorId);
+    const professorDocRef = this.firestore.collection('users').doc(this.currentProfessor.id);
     const studentDocRef = this.firestore.collection('users').doc(studentId);
-    const tfgDocRef = this.firestore.collection('tfginder').doc(tfgId);
 
     try {
       await this.firestore.firestore.runTransaction(async (transaction) => {
-        const tfgDoc = await transaction.get(tfgDocRef.ref);
-        if (!tfgDoc.exists) {
-          throw new Error(`El TFG con ID ${tfgId} no existe.`);
-        }
-
         const professorDoc = await transaction.get(professorDocRef.ref);
-        if (!professorDoc.exists) {
-          throw new Error(`El profesor con ID ${professorId} no existe.`);
-        }
+        if (!professorDoc.exists) throw new Error('El profesor no existe.');
 
+        const professorData = professorDoc.data() as TfgData;
+        const interesadosStudent: string[] = professorData['interesadosStudent'] || [];
+        const acceptedStudents: string[] = professorData['acceptedStudents'] || [];
+
+        // Obtenemos los datos del estudiante
         const studentDoc = await transaction.get(studentDocRef.ref);
-        if (!studentDoc.exists) {
-          throw new Error(`El estudiante con ID ${studentId} no existe.`);
+        if (!studentDoc.exists) throw new Error('El estudiante no existe.');
+
+        const studentData = studentDoc.data() as UserData;
+        const pendingTfg: string[] = studentData['pending_tfg'] || [];
+
+        // Seleccionar el TFG correcto
+        const tfgId = pendingTfg.length > 0 ? pendingTfg[0] : null;
+
+        if (!tfgId) {
+          throw new Error('El estudiante no tiene TFG pendiente.');
         }
-
-        const tfgData = tfgDoc.data() as { Estado?: string };
-        if (tfgData.Estado !== 'Libre') {
-          throw new Error('El TFG no está disponible para asignación.');
-        }
-
-        const professorData = professorDoc.data() as {
-          interesadosStudent?: string[];
-          acceptedStudents?: string[];
-        };
-
-        const interesadosStudent = professorData.interesadosStudent || [];
-        const acceptedStudents = professorData.acceptedStudents || [];
 
         if (!interesadosStudent.includes(studentId)) {
           throw new Error('El estudiante no está en la lista de interesados.');
         }
 
-        transaction.update(professorDocRef.ref, {
-          interesadosStudent: interesadosStudent.filter((id) => id !== studentId),
-          acceptedStudents: [...acceptedStudents, studentId],
-        });
+        if (action === 'accept') {
+          const updatedInteresados = interesadosStudent.filter((id: string) => id !== studentId);
+          const updatedAccepted = [...acceptedStudents, studentId];
 
-        transaction.update(studentDocRef.ref, {
-          pending_tfg: [],
-          pendingTFG: false,
-          accepted_tfg: tfgId,
-        });
+          // Actualizamos el documento del profesor
+          transaction.update(professorDocRef.ref, {
+            interesadosStudent: updatedInteresados,
+            acceptedStudents: updatedAccepted,
+          });
 
-        transaction.update(tfgDocRef.ref, {
-          Estado: 'Asignado',
-          Estudiante: studentId,
-        });
+          // Actualizamos el estado del estudiante
+          transaction.update(studentDocRef.ref, {
+            assignedTFG: tfgId, // Asignar el TFG correcto
+            pendingTFG: false,  // Eliminar el estado de pendiente
+            pending_tfg: [],    // Limpiar la lista de TFG pendientes
+          });
 
-        console.log(`Estudiante ${studentId} aceptado para el TFG ${tfgId}.`);
+          console.log(`Estudiante ${studentId} aceptado en el TFG ${tfgId}.`);
+          alert('¡Estudiante aceptado correctamente!');
+        } else if (action === 'reject') {
+          const updatedInteresados = interesadosStudent.filter((id: string) => id !== studentId);
+
+          // Actualizamos el documento del profesor
+          transaction.update(professorDocRef.ref, {
+            interesadosStudent: updatedInteresados,
+          });
+
+          console.log(`Estudiante ${studentId} rechazado.`);
+          alert('¡Estudiante rechazado correctamente!');
+        }
       });
-
-      alert('¡Estudiante aceptado correctamente!');
-    } catch (error: unknown) {
-      const errorMessage = (error as Error).message || 'Ocurrió un error desconocido';
-      console.error('Error en acceptStudent:', errorMessage);
-      alert(`Error al aceptar al estudiante: ${errorMessage}`);
+    } catch (error) {
+      console.error(`Error al ${action === 'accept' ? 'aceptar' : 'rechazar'} al estudiante:`, error);
+      alert(`Ocurrió un error al ${action === 'accept' ? 'aceptar' : 'rechazar'} al estudiante.`);
     }
   }
 
 
 
 
-  async rejectStudent(professorId: string, studentId: string) {
-    const professorDocRef = this.firestore.collection('users').doc(professorId);
-    const userDocRef = this.firestore.collection('users').doc(studentId);
 
-    await this.firestore.firestore.runTransaction(async (transaction) => {
-      const professorDoc = await transaction.get(professorDocRef.ref);
-      if (!professorDoc.exists) throw new Error('El profesor no existe.');
 
-      const professorData = professorDoc.data() as { interesadosStudent?: string[] };
-      const interesadosStudent = professorData.interesadosStudent || [];
-
-      if (!interesadosStudent.includes(studentId)) {
-        throw new Error('El estudiante no está en la lista de interesados.');
-      }
-
-      transaction.update(professorDocRef.ref, {
-        interesadosStudent: interesadosStudent.filter((id) => id !== studentId),
-      });
-
-      transaction.update(userDocRef.ref, {
-        pendingTFG: null, // Marcar como rechazado
-      });
-
-      console.log(`Estudiante ${studentId} rechazado.`);
-    });
-  }
 
 
   // Función para rechazar un TFG (nope)
