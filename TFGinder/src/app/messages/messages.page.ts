@@ -11,7 +11,8 @@ export class MessagesPage implements OnInit {
   chatId: string | null = null; // ID del chat actual
   messages: any[] = []; // Array para los mensajes
   newMessage = ''; // Texto del nuevo mensaje
-  currentUserId: string | null = 'zGIEZREWCrOecUYd6jfP9DbOJYg1'; // Simula el usuario actual (modifícalo según tu implementación)
+  currentUserId: string | null = 'zGIEZREWCrOecUYd6jfP9DbOJYg1'; // ID del usuario actual
+  currentUserName: string | null = 'David Martínez'; // Nombre del usuario actual (modifícalo según tu implementación)
 
   constructor(
     private route: ActivatedRoute,
@@ -19,16 +20,12 @@ export class MessagesPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Captura el ID del chat desde la URL
     this.chatId = this.route.snapshot.paramMap.get('id');
-    console.log('Chat ID:', this.chatId);
-
-    // Obtén los mensajes si el ID del chat es válido
     if (this.chatId) {
       this.chatService.getMessages(this.chatId).subscribe(
         (data) => {
           console.log('Mensajes obtenidos:', data);
-          this.messages = data; // Asigna los mensajes al array
+          this.messages = data; // Mensajes ahora incluyen `senderName`
         },
         (error) => {
           console.error('Error al obtener mensajes:', error);
@@ -38,19 +35,30 @@ export class MessagesPage implements OnInit {
       console.error('No se pudo obtener el ID del chat');
     }
   }
+  
 
   sendMessage() {
-    // Valida que el mensaje no esté vacío
-    if (this.newMessage.trim() && this.chatId && this.currentUserId) {
-      this.chatService.sendMessage(this.chatId, this.currentUserId, this.newMessage).then(
-        () => {
+    if (
+      this.newMessage.trim() &&
+      this.chatId &&
+      this.currentUserId &&
+      this.currentUserName
+    ) {
+      this.chatService
+        .sendMessage(
+          this.chatId,
+          this.currentUserId,
+          this.currentUserName, // Pasa el nombre del usuario
+          this.newMessage
+        )
+        .then(() => {
           console.log('Mensaje enviado');
           this.newMessage = ''; // Limpia el campo de entrada
-        },
-        (error) => {
+        })
+        .catch((error) => {
           console.error('Error al enviar mensaje:', error);
-        }
-      );
+        });
     }
   }
+  
 }

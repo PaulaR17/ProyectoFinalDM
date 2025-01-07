@@ -7,9 +7,16 @@
 <ion-content>
   <div *ngIf="messages.length > 0; else noMessages">
     <div *ngFor="let message of messages">
-      <div [ngClass]="{'my-message': message.senderId === currentUserId, 'their-message': message.senderId !== currentUserId}">
+      <div
+        class="message"
+        [ngClass]="{
+          'my-message': message.senderId === currentUserId,
+          'their-message': message.senderId !== currentUserId
+        }"
+      >
+        <strong>{{ message.senderName }}</strong>
         <p>{{ message.text }}</p>
-        <small>{{ message.timestamp | date:'short' }}</small>
+        <small>{{ message.timestamp | date: 'short' }}</small>
       </div>
     </div>
   </div>
@@ -20,7 +27,13 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-input [(ngModel)]="newMessage" placeholder="Escribe un mensaje..."></ion-input>
-    <ion-button (click)="sendMessage()">Enviar</ion-button>
+    <ion-input
+      [(ngModel)]="newMessage"
+      placeholder="Escribe un mensaje..."
+      (keyup.enter)="sendMessage()"
+    ></ion-input>
+    <ion-button (click)="sendMessage()" color="primary" [disabled]="!newMessage.trim()">
+      Enviar
+    </ion-button>
   </ion-toolbar>
 </ion-footer>

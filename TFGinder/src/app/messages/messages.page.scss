@@ -1,0 +1,41 @@
+.message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+  }
+  
+  .my-message {
+    background-color: #303235; /* Azul para mensajes propios */
+    color: white;
+    margin-left: auto; /* Alinea a la derecha */
+    text-align: right; /* Alinea el texto a la derecha */
+  }
+  
+  .their-message {
+    background-color: #f1f1f1; /* Gris claro para mensajes de otros */
+    color: black;
+    margin-right: auto; /* Alinea a la izquierda */
+    text-align: left; /* Alinea el texto a la izquierda */
+  }
+  
+  .message strong {
+    display: block;
+    font-size: 1rem; /* Tamaño de fuente para el nombre */
+    margin-bottom: 5px;
+  }
+  
+  .message p {
+    font-size: 1.1rem; /* Tamaño del mensaje */
+    margin: 0;
+  }
+  
+  .message small {
+    display: block;
+    font-size: 0.8rem; /* Tamaño de la fecha */
+    color: gray;
+    margin-top: 5px;
+    text-align: right;
+  }
+  
