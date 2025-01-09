@@ -268,66 +268,67 @@ async getStudentName(studentId: string): Promise<string> {
       alert('No se pudo obtener el ID del usuario.');
       return;
     }
-  
+
     const tfgId = this.currentProfessor?.id;
     if (!tfgId) {
       console.error('No se encontró el ID del TFG actual.');
       return;
     }
-  
+
     try {
       const tfgDocRef = this.firestore.collection('tfginder').doc(tfgId);
       const userDocRef = this.firestore.collection('users').doc(this.userId);
-  
+
       await this.firestore.firestore.runTransaction(async (transaction) => {
         // **Read all documents at the beginning**
         const tfgDoc = await transaction.get(tfgDocRef.ref);
         if (!tfgDoc.exists) {
           throw new Error('El TFG no existe.');
         }
-  
+
         const tfgData = tfgDoc.data() as {
           interesados?: number;
           interesadosStudent?: string[];
           "Tutor/a"?: string;
         };
-  
+
         const userDoc = await transaction.get(userDocRef.ref);
         if (!userDoc.exists) {
           throw new Error('El usuario no existe.');
         }
-  
+
         const userData = userDoc.data() as {
           pending_tfg?: string[];
           pendingTFG?: boolean;
         };
-  
+
         const professorName = tfgData["Tutor/a"];
-        if (!professorName) {
-          throw new Error('No se encontró el nombre del tutor en el TFG.');
+        if (!professorName || typeof professorName !== 'string' || professorName.trim() === '') {
+          throw new Error('El campo Tutor/a está vacío o no es válido.');
         }
-  
+
         const professorQuerySnapshot = await this.firestore
           .collection('users')
           .ref.where('name', '==', professorName.trim())
           .get();
-  
+
         if (professorQuerySnapshot.empty) {
+          console.error(`No se encontró ningún profesor con el nombre: "${professorName.trim()}"`);
           throw new Error('No se encontró al profesor asociado.');
         }
-  
+
         const professorDoc = professorQuerySnapshot.docs[0];
         const professorId = professorDoc.id;
         const professorDocRef = this.firestore.collection('users').doc(professorId);
-  
+
         const professorData = professorDoc.data() as {
           interesadosStudent?: string[];
         };
-  
+
         // **Perform all updates after reads**
         const currentInteresados = tfgData.interesados || 0;
         const updatedInteresados = currentInteresados + 1;
-  
+
         const interesadosStudent = tfgData.interesadosStudent || [];
         if (!this.userId) {
           throw new Error('El userId no está definido.');
@@ -335,51 +336,51 @@ async getStudentName(studentId: string): Promise<string> {
         if (interesadosStudent.includes(this.userId)) {
           throw new Error('Ya has mostrado interés en este TFG.');
         }
-  
+
         // Add userId to interesadosStudent in TFG
         interesadosStudent.push(this.userId);
-  
+
         // Update TFG document
         transaction.update(tfgDocRef.ref, {
           interesados: updatedInteresados,
           interesadosStudent: interesadosStudent,
         });
-  
+
         console.log('TFG actualizado con nuevos interesados:', updatedInteresados);
-  
+
         // Update user's pending_tfg array and pendingTFG boolean
         const pendingTfgs = userData.pending_tfg || [];
         if (pendingTfgs.includes(tfgId)) {
           throw new Error('Este TFG ya está en tu lista de pendientes.');
         }
         pendingTfgs.push(tfgId);
-  
+
         transaction.update(userDocRef.ref, {
           pending_tfg: pendingTfgs,
           pendingTFG: pendingTfgs.length > 0, // Set to true if there are TFGs in the array
         });
-  
+
         console.log(
           `Usuario ${this.userId} actualizado con pending_tfg:`,
           pendingTfgs
         );
-  
+
         // Update professor's interesadosStudent array
         const professorInteresadosStudent = professorData.interesadosStudent || [];
         if (!professorInteresadosStudent.includes(this.userId)) {
           professorInteresadosStudent.push(this.userId);
         }
-  
+
         transaction.update(professorDocRef.ref, {
           interesadosStudent: professorInteresadosStudent,
         });
-  
+
         console.log(
           `Profesor ${professorId} actualizado con nuevos interesados:`,
           professorInteresadosStudent
         );
       });
-  
+
       alert('¡Tu interés ha sido registrado correctamente!');
       this.showNextProfessor();
     } catch (error) {
@@ -387,8 +388,8 @@ async getStudentName(studentId: string): Promise<string> {
       alert('Ocurrió un problema al registrar tu interés. Intenta de nuevo.');
     }
   }
-  
-  
+
+
 
   async acceptStudent(studentId: string): Promise<void> {
     await this.handleStudentAction(studentId, 'accept');
