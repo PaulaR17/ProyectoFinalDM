@@ -70,8 +70,9 @@ export class Tab1Page implements OnInit {
       .subscribe(
         (userDoc) => {
           if (userDoc.exists) {
-            const userData = userDoc.data() as { role: string | undefined };
-            this.userRole = userData?.role || null;
+            // Verificar ambos campos: 'role' y 'rol'
+            const userData = userDoc.data() as { role?: string; rol?: string };
+            this.userRole = userData?.role || userData?.rol || null;
 
             console.log('Rol del usuario:', this.userRole);
 
@@ -94,6 +95,7 @@ export class Tab1Page implements OnInit {
         }
       );
   }
+
 
 
   handleProfessorRole() {
