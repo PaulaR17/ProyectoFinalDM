@@ -52,20 +52,22 @@
         <ion-list>
           <ion-item *ngFor="let student of interestedStudents">
             <ion-label>
-              <p><strong>ID:</strong> {{ student.id }}</p>
               <p><strong>Nombre:</strong> {{ student.name }}</p>
+              <p><strong>Interesado en TFG:</strong> {{ student.tfgTitle || 'No especificado' }}</p>
             </ion-label>
 
             <!-- Botones agrupados -->
             <ion-buttons slot="end" class="button-group">
-              <ion-button color="success" expand="block" (click)="acceptStudent(student.id)">
+              <ion-button color="success" expand="block" (click)="acceptStudent(student.id, student.tfgId || '')">
                 Aceptar
               </ion-button>
-              <ion-button color="danger" expand="block" (click)="rejectStudent(student.id)">
+              <ion-button color="danger" expand="block" (click)="rejectStudent(student.id, student.tfgId || '')">
                 Rechazar
               </ion-button>
+
             </ion-buttons>
           </ion-item>
+
         </ion-list>
       </ng-template>
     </div>

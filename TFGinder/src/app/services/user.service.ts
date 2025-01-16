@@ -102,11 +102,34 @@ export class UserService {
 
       if (this.role === 'professor') {
         const tfgProfessorIds: string[] = userDoc.tfg_professor || [];
+        console.log('IDs de TFGs del profesor:', tfgProfessorIds);
+
+        // Verificar si hay IDs válidos
+        if (tfgProfessorIds.length === 0) {
+          console.warn('El profesor no tiene TFGs asignados en tfg_professor.');
+          return [];
+        }
+
         const tfgs = await Promise.all(
-          tfgProfessorIds.map((tfgId) => this.getTFGById(tfgId).then((tfg) => tfg ? { ...tfg, status: tfg.estado } : null))
+          tfgProfessorIds.map(async (tfgId) => {
+            if (!tfgId || typeof tfgId !== 'string') {
+              console.error('ID de TFG inválido:', tfgId);
+              return null;
+            }
+
+            const tfg = await this.getTFGById(tfgId);
+            if (!tfg) {
+              console.error(`No se encontró el TFG con ID ${tfgId}.`);
+              return null;
+            }
+
+            return { ...tfg, status: tfg.estado };
+          })
         );
+
         return tfgs.filter((tfg) => tfg);
       }
+
 
       console.error('Rol no válido.');
       return [];

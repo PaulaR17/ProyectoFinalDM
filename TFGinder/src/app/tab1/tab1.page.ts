@@ -22,6 +22,16 @@ interface UserData {
   [key: string]: any; // Para permitir otros campos dinámicos si es necesario
 }
 
+interface InterestedStudent {
+  id: string; // ID del estudiante
+  name: string; // Nombre del estudiante
+  requestedTfg?: string; // ID del TFG solicitado (opcional)
+  tfgId?: string; // ID del TFG asociado
+  tfgTitle?: string; // Título del TFG asociado
+}
+
+
+
 @Component({
   selector: 'app-tab1',
   templateUrl: './tab1.page.html',
@@ -109,7 +119,7 @@ export class Tab1Page implements OnInit {
   }
 
 
-  interestedStudents: { id: string; name: string; requestedTfg?: string }[] = [];
+  interestedStudents: InterestedStudent[] = [];
   fetchProfessorData() {
     if (!this.userId) {
       console.error('El userId no está definido.');
@@ -141,24 +151,31 @@ export class Tab1Page implements OnInit {
 
 
 
-  loadInterestedStudents(studentIds: string[]) {
+  async loadInterestedStudents(studentIds: string[]) {
     this.interestedStudents = []; // Reiniciar la lista de estudiantes
 
-    studentIds.forEach(async (studentId) => {
-      const studentData = await this.getStudentData(studentId); // Obtén los datos del estudiante
+    for (const studentId of studentIds) {
+      const studentData = await this.getStudentData(studentId); // Obtener datos del estudiante
 
       // Obtener el TFG solicitado por el estudiante
-      const requestedTfg = this.currentProfessor.tfg_professor.find(
+      const requestedTfgId = this.currentProfessor.tfg_professor.find(
         (tfgId: string) => studentData['pending_tfg']?.includes(tfgId)
       );
 
-      // Agregar al estudiante con el TFG solicitado
+      let tfgTitle = 'No especificado';
+      if (requestedTfgId) {
+        const tfgData = await this.getTFGData(requestedTfgId);
+        tfgTitle = tfgData?.['Titulo del TFG'] || 'No especificado';
+      }
+
+      // Añadir el estudiante a la lista con todos los datos necesarios
       this.interestedStudents.push({
         id: studentId,
         name: studentData.name,
-        requestedTfg: requestedTfg || null, // Asociar el TFG solicitado
+        tfgId: requestedTfgId || null,
+        tfgTitle: tfgTitle,
       });
-    });
+    }
   }
 
 
@@ -175,7 +192,17 @@ export class Tab1Page implements OnInit {
     return { name: 'Desconocido', role: '', pending_tfg: [] }; // Retornar valores por defecto
   }
 
-
+  async getTFGData(tfgId: string): Promise<any> {
+    try {
+      const doc = await this.firestore.collection('tfginder').doc(tfgId).ref.get();
+      if (doc.exists) {
+        return doc.data();
+      }
+    } catch (error) {
+      console.error(`Error fetching data for TFG ${tfgId}:`, error);
+    }
+    return null;
+  }
 
 
 
@@ -393,89 +420,70 @@ async getStudentName(studentId: string): Promise<string> {
 
 
 
-  async acceptStudent(studentId: string): Promise<void> {
-    await this.handleStudentAction(studentId, 'accept');
-  }
-
-  async rejectStudent(studentId: string): Promise<void> {
-    await this.handleStudentAction(studentId, 'reject');
-  }
-
-  private async handleStudentAction(studentId: string, action: 'accept' | 'reject'): Promise<void> {
-    if (!this.currentProfessor || !this.currentProfessor.id) {
-      console.error('No hay un profesor actual definido.');
+  async rejectStudent(studentId: string, tfgId: string): Promise<void> {
+    if (!tfgId) {
+      alert('No se pudo determinar el TFG asociado.');
       return;
     }
+    await this.handleStudentAction(studentId, tfgId, 'reject');
+  }
 
+  async acceptStudent(studentId: string, tfgId: string): Promise<void> {
+    if (!tfgId) {
+      alert('No se pudo determinar el TFG asociado.');
+      return;
+    }
+    await this.handleStudentAction(studentId, tfgId, 'accept');
+  }
+
+
+
+  private async handleStudentAction(studentId: string, tfgId: string, action: 'accept' | 'reject'): Promise<void> {
+    const tfgDocRef = this.firestore.collection('tfginder').doc(tfgId);
     const professorDocRef = this.firestore.collection('users').doc(this.currentProfessor.id);
     const studentDocRef = this.firestore.collection('users').doc(studentId);
-    const chatsCollectionRef = this.firestore.collection('Chats'); // Referencia a la colección de chats
 
     try {
       await this.firestore.firestore.runTransaction(async (transaction) => {
+        const tfgDoc = await transaction.get(tfgDocRef.ref);
+        if (!tfgDoc.exists) throw new Error('El TFG no existe.');
+
         const professorDoc = await transaction.get(professorDocRef.ref);
         if (!professorDoc.exists) throw new Error('El profesor no existe.');
 
-        const professorData = professorDoc.data() as TfgData;
-        const interesadosStudent: string[] = professorData['interesadosStudent'] || [];
-        const acceptedStudents: string[] = professorData['acceptedStudents'] || [];
-
-        // Obtenemos los datos del estudiante
         const studentDoc = await transaction.get(studentDocRef.ref);
         if (!studentDoc.exists) throw new Error('El estudiante no existe.');
 
-        const studentData = studentDoc.data() as UserData;
-        const pendingTfg: string[] = studentData['pending_tfg'] || [];
+        const professorData = professorDoc.data() as TfgData;
+        const interesadosStudent = professorData['interesadosStudent'] || [];
+        const acceptedStudents = professorData['acceptedStudents'] || [];
 
-        // Seleccionar el TFG correcto
-        const tfgId = pendingTfg.length > 0 ? pendingTfg[0] : null;
-
-        if (!tfgId) {
-          throw new Error('El estudiante no tiene TFG pendiente.');
-        }
-
-        if (!interesadosStudent.includes(studentId)) {
-          throw new Error('El estudiante no está en la lista de interesados.');
-        }
+        const updatedInteresados = interesadosStudent.filter((id: string) => id !== studentId);
 
         if (action === 'accept') {
-          const updatedInteresados = interesadosStudent.filter((id: string) => id !== studentId);
-          const updatedAccepted = [...acceptedStudents, studentId];
+          acceptedStudents.push(studentId);
 
-          // Actualizamos el documento del profesor
           transaction.update(professorDocRef.ref, {
             interesadosStudent: updatedInteresados,
-            acceptedStudents: updatedAccepted,
+            acceptedStudents: acceptedStudents,
           });
 
-          // Actualizamos el estado del estudiante
           transaction.update(studentDocRef.ref, {
             assignedTFG: tfgId,
             pendingTFG: false,
             pending_tfg: [],
           });
 
-          // Crear un chat entre el profesor y el estudiante
-          const chatData = {
-            participants: [this.currentProfessor.id, studentId],
-            lastMessage: 'Hola, ¿cómo estás?',
-            timestamp: new Date().toISOString(),
-            messages: [], // Campo vacío para mensajes futuros
-          };
+          transaction.update(tfgDocRef.ref, {
+            Estado: 'Asignado',
+            Estudiante: studentId,
+          });
 
-          await chatsCollectionRef.add(chatData);
-
-          console.log(`Estudiante ${studentId} aceptado en el TFG ${tfgId} y chat creado.`);
-          alert('¡Estudiante aceptado y chat creado correctamente!');
-        } else if (action === 'reject') {
-          const updatedInteresados = interesadosStudent.filter((id: string) => id !== studentId);
-
-          // Actualizamos el documento del profesor
+          alert('¡Estudiante aceptado y TFG asignado correctamente!');
+        } else {
           transaction.update(professorDocRef.ref, {
             interesadosStudent: updatedInteresados,
           });
-
-          console.log(`Estudiante ${studentId} rechazado.`);
           alert('¡Estudiante rechazado correctamente!');
         }
       });
@@ -484,6 +492,8 @@ async getStudentName(studentId: string): Promise<string> {
       alert(`Ocurrió un error al ${action === 'accept' ? 'aceptar' : 'rechazar'} al estudiante.`);
     }
   }
+
+
 
 
 
