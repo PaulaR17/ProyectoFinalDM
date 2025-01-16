@@ -9,27 +9,31 @@
   </ion-toolbar>
 </ion-header>
 
-<content>
-  <div class="profile-container">
+<ion-content>
+  <!-- Mostrar spinner si no hay datos cargados -->
+  <div *ngIf="!professor" class="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando datos del profesor...</p>
+  </div>
+
+  <!-- Mostrar datos del profesor si están disponibles -->
+  <div *ngIf="professor" class="profile-container">
     <div class="professor-header">
-      
-        <ion-img [src]="professor.imagen"></ion-img>
-      
+      <!-- Imagen del profesor -->
+      <ion-img [src]="professor.imagen || 'assets/images/default.png'"></ion-img>
     </div>
 
     <div class="professor-info">
-      <h1 class="professor-name">{{ professor.name}}</h1>
-      <p class="professor-department">{{ professor.department }}</p>
-
+      <h1 class="professor-name">{{ professor['Tutor/a'] || 'Sin nombre' }}</h1>
       <div class="tfg-section">
-        <h2 class="tfg-title">{{ professor.tfg.title }}</h2>
-        <p class="tfg-description">{{ professor.tfg.description }}</p>
+        <h2 class="tfg-title">{{ professor['Titulo del TFG'] || 'Título no disponible' }}</h2>
+        <p class="tfg-description">{{ professor.description || 'Descripción no disponible' }}</p>
       </div>
 
       <div class="action-buttons">
-        <ion-button class="reject-btn" (click)="reject()">✕</ion-button>
-        <ion-button class="like-btn" (click)="like()">♥</ion-button>
+        <ion-button color="danger" (click)="reject()">✕</ion-button>
+        <ion-button color="primary" (click)="like()">♥</ion-button>
       </div>
     </div>
   </div>
-</content>
+</ion-content>

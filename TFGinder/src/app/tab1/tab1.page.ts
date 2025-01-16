@@ -506,10 +506,15 @@ async getStudentName(studentId: string): Promise<string> {
   }
 
 
-  // Función para mostrar detalles del profesor
   mostrarDetallesProfesor() {
-    this.router.navigate(['/professor-info']);
+    if (this.currentProfessor && this.currentProfessor.id) {
+      this.router.navigate(['/professor-info', this.currentProfessor.id]);
+    } else {
+      console.error('No hay un currentProfessor válido para mostrar.');
+    }
   }
+
+
 
 }
 

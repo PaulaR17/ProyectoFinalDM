@@ -15,7 +15,7 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'professor-info',
+    path: 'professor-info/:id', // Ruta con parámetro dinámico `id`
     loadChildren: () => import('./professor-info/professor-info.module').then( m => m.ProfessorInfoPageModule)
   },
   {
