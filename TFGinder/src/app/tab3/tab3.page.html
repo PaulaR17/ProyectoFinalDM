@@ -14,41 +14,56 @@
     <!-- Header del perfil con la imagen del usuario -->
     <div class="profile-header">
       <ion-avatar class="profile-avatar">
-        <ion-img [src]="user.image"></ion-img>
+        <ion-img [src]="user.image" alt="Imagen de perfil"></ion-img>
       </ion-avatar>
     </div>
 
+    <!-- Información del usuario -->
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Nombre completo</ion-label>
-        <ion-input value="{{ user.name }}" readonly></ion-input>
+        <ion-input [value]="user.name" readonly></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="stacked">Carrera</ion-label>
-        <ion-input value="{{ user.degree }}" readonly></ion-input>
+        <ion-input [value]="user.degree" readonly></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="stacked">Correo electrónico</ion-label>
-        <ion-input value="{{ user.email }}" readonly></ion-input>
+        <ion-input [value]="user.email" readonly></ion-input>
       </ion-item>
     </ion-list>
 
     <!-- TFGs del usuario -->
     <div class="tfg-list">
       <h3>Mis TFGs</h3>
-      <ion-list>
-        <ion-item *ngFor="let tfg of tfgs" (click)="mostrarDetallesTFG(tfg)">
-          <ion-label>
-            <h2>{{ tfg.title }}</h2>
-            <p>{{ userService.getRole() === 'student' ? 'Tutor/a: ' + tfg.professor : 'Estudiante: ' + tfg.student }}</p>
-          </ion-label>
-          <ion-badge slot="end" [color]="tfg.status === 'Aceptado' ? 'success' : 'warning'">
-            {{ tfg.status }}
-          </ion-badge>
-        </ion-item>
-      </ion-list>
+      <div *ngIf="tfgs && tfgs.length > 0; else noTFGs">
+        <ion-list>
+          <ion-item *ngFor="let tfg of tfgs" (click)="mostrarDetallesTFG(tfg)">
+            <ion-label>
+              <h2>{{ tfg.title }}</h2>
+              <p *ngIf="userService.getRole() === 'student'">
+                Tutor/a: {{ tfg.professor }}
+              </p>
+              <p *ngIf="userService.getRole() === 'professor'">
+                Estudiante: {{ tfg.student }}
+              </p>
+            </ion-label>
+            <ion-badge slot="end" [color]="tfg.status === 'Aceptado' ? 'success' : 'warning'">
+              {{ tfg.status }}
+            </ion-badge>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <!-- Mensaje si no hay TFGs -->
+      <ng-template #noTFGs>
+        <div class="no-tfgs">
+          <p>No tienes TFGs asignados.</p>
+        </div>
+      </ng-template>
     </div>
   </div>
 </ion-content>

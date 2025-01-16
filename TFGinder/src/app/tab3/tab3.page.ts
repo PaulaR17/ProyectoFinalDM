@@ -24,36 +24,34 @@ export class Tab3Page implements OnInit {
     public userService: UserService
   ) {}
 
-  // Este método solo se ejecuta una vez, al inicializar el componente
   async ngOnInit() {
     await this.loadUserData();
     await this.loadTFGs();
   }
 
-  // Este método se ejecuta cada vez que se entra en la vista
   async ionViewWillEnter() {
-    await this.loadUserData(); // Asegúrate de cargar los datos del usuario actual
-    await this.loadTFGs(); // Recarga los TFGs para reflejar cambios
+    await this.loadUserData();
+    await this.loadTFGs();
   }
 
-  // Carga los datos del usuario desde el servicio
   private async loadUserData() {
     this.user.name = this.userService.getName() || 'Nombre no disponible';
     this.user.degree = this.userService.getDegree() || 'Carrera no disponible';
     this.user.email = this.userService.getEmail() || 'Email no disponible';
     this.user.image = this.userService.getImage();
+    console.log('Datos del usuario:', this.user);
   }
 
-  // Carga los TFGs asociados al usuario desde el servicio
   private async loadTFGs() {
     try {
       this.tfgs = await this.userService.getUserTFGs();
+      console.log('TFGs cargados:', this.tfgs);
     } catch (error) {
       console.error('Error al cargar los TFGs:', error);
     }
   }
 
-  // Navega a los detalles del TFG seleccionado
+
   mostrarDetallesTFG(tfg: any) {
     console.log('Navegando con tfgId:', tfg.id);
     if (this.userService.getRole() === 'student') {
@@ -63,12 +61,10 @@ export class Tab3Page implements OnInit {
     }
   }
 
-  // Cierra sesión y redirige al login
   salirAplicacion() {
     this.router.navigate(['/login']);
   }
 
-  // Muestra un mensaje de configuración (puedes personalizarlo)
   async presentAlert() {
     const alert = await this.alertController.create({
       header: 'Configuración',
