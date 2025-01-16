@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>TFGinder</ion-title>
+
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +18,9 @@
           </button>
         </div>
         <div class="professor-info">
-          <h2 class="professor-name">{{ currentProfessor['Título del TFG'] }}</h2>
+          <p class="TFG-title">
+            <strong>Titulo:</strong> {{  currentProfessor['Titulo del TFG']  }}
+          </p>
           <p class="professor-department">
             <strong>Tutor:</strong> {{ currentProfessor['Tutor/a'] }}
           </p>
